@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="stylesheet" href="css/style.css">  <link rel="stylesheet" href="css/estilo-novo.css">
+</head>
+<body>
+<div class="container">
+<h2>Atendimento</h2>
+
+<input id="nome" placeholder="Nome">
+<input id="cpf" placeholder="CPF">
+<input id="data" placeholder="data">
+<input id="sexo" placeholder="sexo">
+<input id="nome do responsavel" placeholder="nome do responsavel">
+<input id="estado civil" placeholder="estado civil">
+<input id="nome" placeholder="Nome">
+<input id="endereço" placeholder="endereço">
+<input id="telefone" placeholder="telefone">
+<input id="email" placeholder="email">
+<input id="contato de emergengia" placeholder="contato de emergengia">  
+ 
+
+<select id="tipo">
+  <option>Convenio</option>
+  <option>Particular</option>
+</select>
+
+<input type="file" id="foto">
+
+<button onclick="cadastrar()">Cadastrar</button>
+</div>
+
+<script>
+function cadastrar(){
+ fetch("/atendimento",{
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body: JSON.stringify({
+    nome: nome.value,
+    cpf: cpf.value,
+    tipo: tipo.value
+  })
+ });
+ alert("Paciente enviado para triagem");
+}
+</script>
+</body>
+</html>

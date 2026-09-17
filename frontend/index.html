@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Sentinela Saúde</title>
+
+
+  <style>
+
+    /* =====================================================
+       RESET
+    ===================================================== */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+
+    /* =====================================================
+       CORES
+    ===================================================== */
+
+    :root {
+
+      --rosa: #d69aaa;
+
+      --rosa-claro: #f4dfe5;
+
+      --rosa-fundo: #fff6f8;
+
+      --lilas: #c8b7d6;
+
+      --azul: #9bbfc9;
+
+      --azul-claro: #e7f2f4;
+
+      --verde: #b7cabe;
+
+      --texto: #52636b;
+
+      --texto-claro: #8c999f;
+
+      --branco: #ffffff;
+
+    }
+
+
+    /* =====================================================
+       BODY
+    ===================================================== */
+
+    body {
+
+      min-height: 100vh;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      position: relative;
+
+      overflow: hidden;
+
+      font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+      color: var(--texto);
+
+
+      /*
+        IMAGEM DE FUNDO
+      */
+
+      background-image:
+
+        linear-gradient(
+          rgba(247, 251, 252, 0.78),
+          rgba(255, 246, 249, 0.90)
+        ),
+
+        url(
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYuT1YLgy1DV-bfV37eRtr_ZSovqaphHIswF_wbFIW1Cd-ut3sG_Osi7Q&s=10"
+        );
+
+
+      background-size: cover;
+
+      background-position: center;
+
+      background-attachment: fixed;
+
+    }
+
+
+    /* =====================================================
+       DESFOQUE DO FUNDO
+    ===================================================== */
+
+    body::before {
+
+      content: "";
+
+      position: fixed;
+
+      inset: 0;
+
+      backdrop-filter: blur(2px);
+
+      pointer-events: none;
+
+      z-index: 0;
+
+    }
+
+
+    /* =====================================================
+       DECORAÇÕES
+    ===================================================== */
+
+    .bolha {
+
+      position: fixed;
+
+      border-radius: 50%;
+
+      pointer-events: none;
+
+      z-index: 1;
+
+    }
+
+
+    .bolha-1 {
+
+      width: 270px;
+
+      height: 270px;
+
+      top: -130px;
+
+      left: -100px;
+
+      background:
+        rgba(243, 215, 225, 0.55);
+
+    }
+
+
+    .bolha-2 {
+
+      width: 320px;
+
+      height: 320px;
+
+      right: -160px;
+
+      bottom: -150px;
+
+      background:
+        rgba(199, 183, 214, 0.24);
+
+    }
+
+
+    .bolha-3 {
+
+      width: 60px;
+
+      height: 60px;
+
+      right: 13%;
+
+      top: 12%;
+
+      background:
+        rgba(183, 202, 190, 0.35);
+
+    }
+
+
+    /* =====================================================
+       CONTAINER
+    ===================================================== */
+
+    .pagina {
+
+      width: 100%;
+
+      max-width: 445px;
+
+      padding: 20px;
+
+      position: relative;
+
+      z-index: 5;
+
+    }
+
+
+    /* =====================================================
+       CARD
+    ===================================================== */
+
+    .card {
+
+      width: 100%;
+
+      padding: 38px 42px 32px;
+
+      text-align: center;
+
+      background:
+        rgba(255, 255, 255, 0.95);
+
+      border:
+        1px solid
+        rgba(255, 255, 255, 0.9);
+
+      border-radius: 30px;
+
+      box-shadow:
+
+        0 30px 70px
+        rgba(74, 91, 100, 0.18),
+
+        0 8px 25px
+        rgba(74, 91, 100, 0.08);
+
+      backdrop-filter: blur(16px);
+
+      animation:
+        aparecer 0.8s ease;
+
+    }
+
+
+    @keyframes aparecer {
+
+      from {
+
+        opacity: 0;
+
+        transform:
+          translateY(25px)
+          scale(0.97);
+
+      }
+
+      to {
+
+        opacity: 1;
+
+        transform:
+          translateY(0)
+          scale(1);
+
+      }
+
+    }
+
+
+    /* =====================================================
+       LOGO CRIATIVA
+    ===================================================== */
+
+    .logo {
+
+      width: 110px;
+
+      height: 110px;
+
+      margin:
+        0 auto
+        17px;
+
+      position: relative;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+    }
+
+
+    /* Halo */
+
+    .halo {
+
+      position: absolute;
+
+      width: 91px;
+
+      height: 91px;
+
+      border-radius: 50%;
+
+      background:
+
+        linear-gradient(
+          145deg,
+          #f8e4ea,
+          #e5f1f3
+        );
+
+      box-shadow:
+
+        0 12px 28px
+        rgba(85, 105, 112, 0.13);
+
+    }
+
+
+    /* =====================================================
+       PÉTALAS
+    ===================================================== */
+
+    .petala {
+
+      position: absolute;
+
+      width: 27px;
+
+      height: 40px;
+
+      border-radius:
+        80% 20% 80% 20%;
+
+      opacity: 0.88;
+
+      z-index: 2;
+
+    }
+
+
+    .petala-1 {
+
+      top: 3px;
+
+      left: 42px;
+
+      background: #dca3b5;
+
+      transform: rotate(0deg);
+
+    }
+
+
+    .petala-2 {
+
+      top: 35px;
+
+      right: 3px;
+
+      background: #c9b8d7;
+
+      transform: rotate(90deg);
+
+    }
+
+
+    .petala-3 {
+
+      bottom: 3px;
+
+      left: 42px;
+
+      background: #b7cbbe;
+
+      transform: rotate(180deg);
+
+    }
+
+
+    .petala-4 {
+
+      top: 35px;
+
+      left: 3px;
+
+      background: #dca3b5;
+
+      transform: rotate(270deg);
+
+    }
+
+
+    /* =====================================================
+       CÍRCULO DO I
+    ===================================================== */
+
+    .simbolo-i {
+
+      position: relative;
+
+      z-index: 5;
+
+      width: 60px;
+
+      height: 60px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background: white;
+
+      color: #c48699;
+
+      font-family: Georgia, serif;
+
+      font-size: 44px;
+
+      font-weight: bold;
+
+      font-style: italic;
+
+      line-height: 1;
+
+      box-shadow:
+
+        0 6px 16px
+        rgba(82, 101, 108, 0.13);
+
+    }
+
+
+    /* =====================================================
+       MINI CRUZ
+    ===================================================== */
+
+    .mini-cruz {
+
+      position: absolute;
+
+      z-index: 7;
+
+      right: 12px;
+
+      bottom: 12px;
+
+      width: 24px;
+
+      height: 24px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background: #aec5b7;
+
+      color: white;
+
+      font-size: 16px;
+
+      font-weight: bold;
+
+      border: 3px solid white;
+
+      box-shadow:
+        0 3px 8px rgba(80, 100, 90, 0.15);
+
+    }
+
+
+    /* =====================================================
+       NOME DO HOSPITAL
+    ===================================================== */
+
+    .nome-hospital {
+
+      font-size: 26px;
+
+      font-weight: 600;
+
+      letter-spacing: -0.7px;
+
+      color: #53656d;
+
+      margin-bottom: 5px;
+
+    }
+
+
+    .nome-hospital span {
+
+      color: #9aa7ac;
+
+      font-weight: 400;
+
+    }
+
+
+    .nome-hospital strong {
+
+      color: #c48699;
+
+      font-weight: 700;
+
+    }
+
+
+    /* =====================================================
+       SLOGAN
+    ===================================================== */
+
+    .slogan {
+
+      font-size: 12px;
+
+      color: #9b8a91;
+
+      letter-spacing: 1px;
+
+      text-transform: uppercase;
+
+      margin-top: 6px;
+
+    }
+
+
+    /* =====================================================
+       LINHA DECORATIVA
+    ===================================================== */
+
+    .linha {
+
+      width: 52px;
+
+      height: 3px;
+
+      margin:
+        23px auto
+        26px;
+
+      border-radius: 20px;
+
+      background:
+
+        linear-gradient(
+          90deg,
+          var(--rosa),
+          var(--azul)
+        );
+
+    }
+
+
+    /* =====================================================
+       CAMPOS
+    ===================================================== */
+
+    .campo {
+
+      text-align: left;
+
+      margin-bottom: 19px;
+
+    }
+
+
+    .campo label {
+
+      display: block;
+
+      margin-bottom: 8px;
+
+      font-size: 13px;
+
+      font-weight: 600;
+
+      color: #62737b;
+
+    }
+
+
+    .input-box {
+
+      position: relative;
+
+    }
+
+
+    .icone {
+
+      position: absolute;
+
+      left: 15px;
+
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      font-size: 16px;
+
+      opacity: 0.72;
+
+      z-index: 2;
+
+    }
+
+
+    input {
+
+      width: 100%;
+
+      height: 51px;
+
+      padding:
+        0
+        15px
+        0
+        44px;
+
+      border:
+        1px solid
+        #e1e7e9;
+
+      border-radius: 13px;
+
+      background:
+        rgba(250, 252, 252, 0.96);
+
+      outline: none;
+
+      color: #52636b;
+
+      font-size: 14px;
+
+      transition:
+        all 0.25s ease;
+
+    }
+
+
+    input::placeholder {
+
+      color: #aab4b8;
+
+    }
+
+
+    input:hover {
+
+      border-color:
+        #d5c1c8;
+
+    }
+
+
+    input:focus {
+
+      background: white;
+
+      border-color:
+        var(--rosa);
+
+      box-shadow:
+
+        0 0 0 4px
+        rgba(214, 154, 170, 0.12);
+
+    }
+
+
+    /* =====================================================
+       BOTÃO
+    ===================================================== */
+
+    button {
+
+      width: 100%;
+
+      height: 52px;
+
+      margin-top: 7px;
+
+      border: none;
+
+      border-radius: 13px;
+
+      cursor: pointer;
+
+      color: white;
+
+      font-size: 15px;
+
+      font-weight: 600;
+
+      letter-spacing: 0.2px;
+
+      background:
+
+        linear-gradient(
+          135deg,
+          #d39aaa,
+          #c58b9f
+        );
+
+      box-shadow:
+
+        0 9px 20px
+        rgba(187, 123, 142, 0.22);
+
+      transition:
+        all 0.25s ease;
+
+    }
+
+
+    button:hover {
+
+      transform:
+        translateY(-2px);
+
+      background:
+
+        linear-gradient(
+          135deg,
+          #c98e9f,
+          #b97d91
+        );
+
+      box-shadow:
+
+        0 12px 25px
+        rgba(187, 123, 142, 0.30);
+
+    }
+
+
+    button:active {
+
+      transform:
+        translateY(0);
+
+    }
+
+
+    /* =====================================================
+       RODAPÉ
+    ===================================================== */
+
+    .rodape {
+
+      margin-top: 23px;
+
+      padding-top: 18px;
+
+      border-top:
+        1px solid
+        #edf0f1;
+
+      color: #a0abad;
+
+      font-size: 11px;
+
+      line-height: 1.6;
+
+    }
+
+
+    .rodape .coracao {
+
+      color: var(--rosa);
+
+      font-size: 13px;
+
+    }
+
+
+    /* =====================================================
+       RESPONSIVIDADE
+    ===================================================== */
+
+    @media (max-width: 500px) {
+
+      body {
+
+        overflow-y: auto;
+
+      }
+
+
+      .pagina {
+
+        padding: 14px;
+
+      }
+
+
+      .card {
+
+        padding:
+          32px
+          25px
+          29px;
+
+        border-radius: 24px;
+
+      }
+
+
+      .nome-hospital {
+
+        font-size: 23px;
+
+      }
+
+    }
+
+  </style>
+
+  <link rel="stylesheet" href="css/estilo-novo.css">
+</head>
+
+
+<body>
+
+
+  <!-- =====================================================
+       DECORAÇÕES DO FUNDO
+  ===================================================== -->
+
+  <div class="bolha bolha-1"></div>
+
+  <div class="bolha bolha-2"></div>
+
+  <div class="bolha bolha-3"></div>
+
+
+  <!-- =====================================================
+       LOGIN
+  ===================================================== -->
+
+  <main class="pagina">
+
+    <section class="card">
+
+
+      <!-- =================================================
+           LOGO
+      ================================================= -->
+
+      <div class="logo">
+
+        <div class="halo"></div>
+
+
+        <div
+          class="petala petala-1">
+        </div>
+
+
+        <div
+          class="petala petala-2">
+        </div>
+
+
+        <div
+          class="petala petala-3">
+        </div>
+
+
+        <div
+          class="petala petala-4">
+        </div>
+
+
+        <div class="simbolo-i">
+          I
+        </div>
+
+
+        <div class="mini-cruz">
+          +
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           NOME
+      ================================================= -->
+
+      <h1 class="nome-hospital">
+
+        <strong>
+          Sentinela
+        </strong>
+        <span> Hospital Geral</span>
+
+      </h1>
+
+
+      <p class="slogan">
+
+        Cuidado em cada detalhe
+
+      </p>
+
+
+      <div class="linha"></div>
+
+
+      <!-- =================================================
+           USUÁRIO
+      ================================================= -->
+
+      <div class="campo">
+
+        <label for="usuario">
+          Usuário
+        </label>
+
+
+        <div class="input-box">
+
+          <span class="icone">
+            👤
+          </span>
+
+
+          <input
+            id="usuario"
+            type="text"
+            placeholder="Digite seu usuário"
+            autocomplete="username"
+          >
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           SENHA
+      ================================================= -->
+
+      <div class="campo">
+
+        <label for="senha">
+          Senha
+        </label>
+
+
+        <div class="input-box">
+
+          <span class="icone">
+            🔒
+          </span>
+
+
+          <input
+            id="senha"
+            type="password"
+            placeholder="Digite sua senha"
+            autocomplete="current-password"
+          >
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           BOTÃO
+      ================================================= -->
+
+      <button
+        id="btnEntrar"
+        onclick="login()"
+      >
+
+        Entrar no sistema
+
+      </button>
+
+
+      <!-- =================================================
+           RODAPÉ
+      ================================================= -->
+
+      <div class="rodape">
+
+        <span class="coracao">
+          ♥
+        </span>
+
+        Ambiente seguro e protegido
+
+        <br>
+
+        Sentinela Saúde
+
+      </div>
+
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       JAVASCRIPT
+  ===================================================== -->
+
+  <script>
+
+
+    function login() {
+
+
+      const usuario =
+        document
+          .getElementById("usuario")
+          .value
+          .trim();
+
+
+      const senha =
+        document
+          .getElementById("senha")
+          .value;
+
+
+      const botao =
+        document
+          .getElementById("btnEntrar");
+
+
+      /* -----------------------------------------------
+         VALIDAÇÃO
+      ------------------------------------------------ */
+
+      if (!usuario || !senha) {
+
+        alert(
+          "Por favor, preencha o usuário e a senha."
+        );
+
+        return;
+
+      }
+
+
+      /* -----------------------------------------------
+         ESTADO DO BOTÃO
+      ------------------------------------------------ */
+
+      botao.disabled = true;
+
+      botao.innerText =
+        "Entrando...";
+
+
+      /* -----------------------------------------------
+         LOGIN
+      ------------------------------------------------ */
+
+      fetch(
+        "/login",
+        {
+
+          method: "POST",
+
+          headers: {
+
+            "Content-Type":
+              "application/json"
+
+          },
+
+          body: JSON.stringify({
+
+            usuario: usuario,
+
+            senha: senha
+
+          })
+
+        }
+
+      )
+
+
+      .then(response => {
+
+        if (!response.ok) {
+
+          throw new Error(
+            "Erro no servidor"
+          );
+
+        }
+
+        return response.json();
+
+      })
+
+
+      .then(data => {
+
+
+        /* TRIAGEM */
+
+        if (
+          data.tipo ===
+          "triagem"
+        ) {
+
+          window.location.href =
+            "triagem.html";
+
+          return;
+
+        }
+
+
+        /* MÉDICO */
+
+        if (
+          data.tipo ===
+          "medico"
+        ) {
+
+          window.location.href =
+            "medico.html";
+
+          return;
+
+        }
+
+
+        /* ATENDIMENTO */
+
+        if (
+          data.tipo ===
+          "atendimento"
+        ) {
+
+          window.location.href =
+            "atendimento.html";
+
+          return;
+
+        }
+
+
+        /* LOGIN INVÁLIDO */
+
+        alert(
+          "Usuário ou senha inválidos."
+        );
+
+
+        botao.disabled = false;
+
+        botao.innerText =
+          "Entrar no sistema";
+
+      })
+
+
+      .catch(error => {
+
+        console.error(
+          "Erro:",
+          error
+        );
+
+
+        alert(
+          "Não foi possível conectar ao servidor."
+        );
+
+
+        botao.disabled = false;
+
+        botao.innerText =
+          "Entrar no sistema";
+
+      });
+
+    }
+
+
+    /* =================================================
+       ENTER PARA LOGIN
+    ================================================= */
+
+    document.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          event.key ===
+          "Enter"
+        ) {
+
+          login();
+
+        }
+
+      }
+    );
+
+
+  </script>
+
+
+</body>
+
+</html>
