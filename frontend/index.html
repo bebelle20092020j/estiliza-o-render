@@ -1,880 +1,890 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Sentinela - Hospital Geral</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --azul-escuro: #123e63;
+      --azul: #2d6f9f;
+      --azul-claro: #6fa8c7;
+      --rosa: #c76f9d;
+      --lilas: #9f92c8;
+      --branco: #ffffff;
+      --fundo: #edf4f8;
+      --texto: #24435b;
+      --borda: #d9e5ee;
+    }
 
-<title>Sentinela Hospital Geral</title>
+    body {
+      min-height: 100vh;
+      background: var(--fundo);
+      font-family: Arial, Helvetica, sans-serif;
 
-<style>
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+      padding: 25px;
+    }
 
-:root {
-  --navy: #123e63;
-  --blue: #2d6f9f;
-  --blue2: #4c8fb5;
-  --pink: #c76f9d;
-  --lilac: #9f92c8;
-  --white: #ffffff;
-  --text: #24435b;
-  --line: #d9e5ee;
-}
+    /* =========================
+       CAIXA PRINCIPAL
+    ========================= */
 
-body {
-  min-height: 100vh;
-  font-family: Inter, Segoe UI, Arial, sans-serif;
-  background: #edf4f8;
-  color: var(--text);
+    .login-container {
+      width: 100%;
+      max-width: 1250px;
+      min-height: 700px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+      background: white;
 
-  padding: 24px;
-  overflow-x: hidden;
-}
+      border-radius: 28px;
+      overflow: hidden;
 
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
 
-/* =========================================
-   ESTRUTURA PRINCIPAL
-========================================= */
+      box-shadow:
+        0 25px 70px rgba(18, 62, 99, 0.20);
+    }
 
-.login-shell {
-  width: min(1280px, 100%);
-  min-height: 720px;
+    /* =========================
+       PARTE DA FOTO
+    ========================= */
 
-  display: grid;
-  grid-template-columns: 1.18fr .82fr;
+    .hospital {
+      position: relative;
 
-  background: #fff;
+      min-height: 700px;
 
-  border-radius: 28px;
-  overflow: hidden;
+      background-image:
+        linear-gradient(
+          rgba(18, 62, 99, 0.15),
+          rgba(18, 62, 99, 0.10)
+        ),
+        url("sentinela-hospital-bg.jpg");
 
-  box-shadow:
-    0 25px 70px rgba(18, 62, 99, .20);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
 
-  position: relative;
-}
+      display: flex;
+      align-items: flex-end;
 
+      padding: 45px;
+    }
 
-/* =========================================
-   PARTE DO HOSPITAL
-========================================= */
+    .hospital::after {
+      content: "";
 
-.hero {
-  position: relative;
+      position: absolute;
+      inset: 0;
 
-  min-height: 720px;
+      background:
+        linear-gradient(
+          to top,
+          rgba(18, 62, 99, 0.72),
+          rgba(18, 62, 99, 0.08) 65%,
+          transparent
+        );
 
-  background-image: url("sentinela-hospital-bg.jpg");
+      pointer-events: none;
+    }
 
-  background-size: cover;
-  background-position: center;
+    /* =========================
+       TEXTO SOBRE A FOTO
+    ========================= */
 
-  display: flex;
-  align-items: flex-end;
+    .hospital-text {
+      position: relative;
+      z-index: 2;
 
-  padding: 42px;
-}
+      color: white;
 
-.hero::after {
-  content: "";
+      max-width: 600px;
+    }
 
-  position: absolute;
-  inset: 0;
+    .hospital-text .mini {
+      font-size: 13px;
 
-  background:
-    linear-gradient(
-      90deg,
-      rgba(18, 62, 99, .05),
-      rgba(18, 62, 99, .02) 55%,
-      rgba(255, 255, 255, .10)
-    );
+      letter-spacing: 3px;
 
-  pointer-events: none;
-}
+      font-weight: bold;
 
+      margin-bottom: 10px;
 
-/* =========================================
-   ÁREA DO LOGIN
-========================================= */
+      opacity: 0.95;
+    }
 
-.login-area {
+    .hospital-text h1 {
+      font-family: Georgia, "Times New Roman", serif;
 
-  position: relative;
+      font-size: clamp(38px, 5vw, 65px);
 
-  background:
-    linear-gradient(
-      145deg,
-      #ffffff 0%,
-      #f8fbfd 70%,
-      #f4eff7 100%
-    );
+      letter-spacing: 3px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+      line-height: 1;
 
-  padding: 48px;
-}
+      margin-bottom: 8px;
+    }
 
-.login-area::before {
+    .hospital-text h2 {
+      font-size: 17px;
 
-  content: "";
+      letter-spacing: 5px;
 
-  position: absolute;
+      font-weight: 600;
 
-  width: 330px;
-  height: 330px;
+      margin-bottom: 15px;
+    }
 
-  border-radius: 50%;
+    .hospital-text p {
+      font-size: 15px;
 
-  right: -160px;
-  bottom: -140px;
+      line-height: 1.6;
 
-  background:
-    rgba(199, 111, 157, .10);
-}
+      max-width: 460px;
 
+      opacity: 0.95;
+    }
 
-/* =========================================
-   CARTÃO
-========================================= */
+    /* =========================
+       PAINEL DE LOGIN
+    ========================= */
 
-.login-card {
+    .login-side {
+      position: relative;
 
-  width: min(430px, 100%);
+      background:
+        linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f9fcfd 70%,
+          #f4eff7 100%
+        );
 
-  position: relative;
-  z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-  background: rgba(255, 255, 255, .97);
+      padding: 45px;
+    }
 
-  border: 1px solid #dce7ef;
+    /* detalhes decorativos */
 
-  border-radius: 24px;
+    .login-side::before {
+      content: "";
 
-  padding: 38px 38px 30px;
+      position: absolute;
 
-  box-shadow:
-    0 18px 45px rgba(18, 62, 99, .12);
-}
+      width: 260px;
+      height: 260px;
 
+      border-radius: 50%;
 
-/* =========================================
-   LOGO
-========================================= */
+      background: rgba(199, 111, 157, 0.08);
 
-.brand {
+      right: -130px;
+      top: -100px;
+    }
 
-  text-align: center;
+    .login-side::after {
+      content: "";
 
-  margin-bottom: 26px;
-}
+      position: absolute;
 
-.logo-mark {
+      width: 180px;
+      height: 180px;
 
-  width: 74px;
-  height: 74px;
+      border-radius: 50%;
 
-  margin: 0 auto 12px;
+      background: rgba(159, 146, 200, 0.08);
 
-  position: relative;
-}
+      left: -100px;
+      bottom: -80px;
+    }
 
-.logo-mark::before {
+    /* =========================
+       CARTÃO
+    ========================= */
 
-  content: "♡";
+    .login-card {
+      width: 100%;
+      max-width: 410px;
 
-  position: absolute;
+      position: relative;
+      z-index: 3;
 
-  inset: 0;
+      background: rgba(255, 255, 255, 0.97);
 
-  display: flex;
+      border: 1px solid var(--borda);
 
-  align-items: center;
-  justify-content: center;
+      border-radius: 24px;
 
-  font-size: 72px;
+      padding: 38px;
 
-  line-height: 1;
+      box-shadow:
+        0 18px 45px rgba(18, 62, 99, 0.12);
+    }
 
-  color: var(--navy);
+    /* =========================
+       LOGO
+    ========================= */
 
-  font-family: Arial;
-}
+    .logo {
+      text-align: center;
 
-.logo-mark::after {
+      margin-bottom: 25px;
+    }
 
-  content: "+";
+    .logo-icon {
+      width: 70px;
+      height: 70px;
 
-  position: absolute;
+      margin: 0 auto 12px;
 
-  left: 50%;
-  top: 50%;
+      position: relative;
+    }
 
-  transform:
-    translate(-50%, -47%);
+    .logo-icon::before {
+      content: "♡";
 
-  font-size: 25px;
+      position: absolute;
 
-  font-weight: 800;
+      inset: 0;
 
-  color: var(--pink);
-}
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-.brand h1 {
+      color: var(--azul-escuro);
 
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
+      font-family: Arial, sans-serif;
 
-  color: var(--navy);
+      font-size: 70px;
 
-  font-size: 31px;
+      line-height: 1;
+    }
 
-  letter-spacing: 2px;
+    .logo-icon::after {
+      content: "+";
 
-  font-weight: 700;
-}
+      position: absolute;
 
-.brand h2 {
+      left: 50%;
+      top: 50%;
 
-  font-size: 12px;
+      transform: translate(-50%, -50%);
 
-  letter-spacing: 4px;
+      color: var(--rosa);
 
-  color: #55758d;
+      font-size: 25px;
 
-  margin-top: 3px;
+      font-weight: bold;
+    }
 
-  font-weight: 700;
-}
+    .logo h1 {
+      color: var(--azul-escuro);
 
-.brand p {
+      font-family: Georgia, "Times New Roman", serif;
 
-  font-size: 13px;
+      font-size: 30px;
 
-  color: #71899b;
+      letter-spacing: 2px;
+    }
 
-  margin-top: 12px;
-}
+    .logo h2 {
+      color: #58748a;
 
+      font-size: 12px;
 
-/* =========================================
-   DETALHE COLORIDO
-========================================= */
+      letter-spacing: 4px;
 
-.divider {
+      margin-top: 4px;
+    }
 
-  height: 3px;
+    .logo p {
+      color: #7b909f;
 
-  width: 74px;
+      font-size: 13px;
 
-  margin:
-    18px auto 26px;
+      margin-top: 11px;
+    }
 
-  border-radius: 10px;
+    /* =========================
+       LINHA COLORIDA
+    ========================= */
 
-  background:
-    linear-gradient(
-      90deg,
-      var(--blue),
-      var(--lilac),
-      var(--pink)
-    );
-}
+    .linha {
+      width: 75px;
+      height: 3px;
 
+      margin: 18px auto 27px;
 
-/* =========================================
-   CAMPOS
-========================================= */
+      border-radius: 10px;
 
-.campo {
+      background:
+        linear-gradient(
+          90deg,
+          var(--azul),
+          var(--lilas),
+          var(--rosa)
+        );
+    }
 
-  margin-bottom: 18px;
-}
+    /* =========================
+       CAMPOS
+    ========================= */
 
-.campo label {
+    .campo {
+      margin-bottom: 18px;
+    }
 
-  display: block;
+    .campo label {
+      display: block;
 
-  font-size: 13px;
+      color: #31536c;
 
-  font-weight: 700;
+      font-size: 13px;
 
-  color: #31536c;
+      font-weight: bold;
 
-  margin-bottom: 7px;
-}
+      margin-bottom: 7px;
+    }
 
-.input-box {
+    .input-container {
+      position: relative;
+    }
 
-  position: relative;
-}
+    .icone {
+      position: absolute;
 
-.icone {
+      left: 14px;
+      top: 50%;
 
-  position: absolute;
+      transform: translateY(-50%);
 
-  left: 14px;
-  top: 50%;
+      font-size: 16px;
 
-  transform:
-    translateY(-50%);
+      opacity: 0.65;
 
-  font-size: 16px;
+      z-index: 2;
+    }
 
-  opacity: .72;
+    .campo input {
+      width: 100%;
+      height: 52px;
 
-  z-index: 2;
-}
+      border: 1px solid var(--borda);
 
-input {
+      border-radius: 13px;
 
-  width: 100%;
+      background: #fbfdff;
 
-  height: 52px;
+      color: var(--texto);
 
-  border:
-    1px solid var(--line);
+      font-size: 14px;
 
-  border-radius: 13px;
+      padding: 0 15px 0 43px;
 
-  background: #fbfdff;
+      outline: none;
 
-  color: var(--text);
+      transition: 0.2s;
+    }
 
-  font-size: 14px;
+    .campo input::placeholder {
+      color: #9aabb8;
+    }
 
-  padding:
-    0 15px 0 44px;
+    .campo input:focus {
+      border-color: var(--azul-claro);
 
-  outline: none;
+      background: white;
 
-  transition: .2s;
-}
+      box-shadow:
+        0 0 0 4px rgba(76, 143, 181, 0.12);
+    }
 
-input::placeholder {
+    /* =========================
+       BOTÃO
+    ========================= */
 
-  color: #9aabb8;
-}
+    .btn-entrar {
+      width: 100%;
 
-input:focus {
+      height: 53px;
 
-  border-color:
-    var(--blue2);
+      border: none;
 
-  box-shadow:
-    0 0 0 4px
-    rgba(76, 143, 181, .12);
+      border-radius: 13px;
 
-  background: #fff;
-}
+      background:
+        linear-gradient(
+          135deg,
+          var(--azul-escuro),
+          var(--azul-claro)
+        );
 
+      color: white;
 
-/* =========================================
-   BOTÃO
-========================================= */
+      font-size: 15px;
 
-button {
+      font-weight: bold;
 
-  width: 100%;
+      cursor: pointer;
 
-  height: 53px;
+      box-shadow:
+        0 9px 20px rgba(45, 111, 159, 0.22);
 
-  border: 0;
+      transition: 0.2s;
+    }
 
-  border-radius: 13px;
+    .btn-entrar:hover {
+      transform: translateY(-1px);
 
-  background:
-    linear-gradient(
-      135deg,
-      var(--navy),
-      var(--blue2)
-    );
+      filter: brightness(1.04);
+    }
 
-  color: #fff;
+    .btn-entrar:disabled {
+      opacity: 0.7;
 
-  font-size: 15px;
+      cursor: wait;
 
-  font-weight: 800;
+      transform: none;
+    }
 
-  cursor: pointer;
+    /* =========================
+       RODAPÉ
+    ========================= */
 
-  box-shadow:
-    0 9px 20px
-    rgba(45, 111, 159, .22);
+    .rodape {
+      text-align: center;
 
-  transition: .2s;
-}
+      border-top: 1px solid #e7edf2;
 
-button:hover {
+      margin-top: 23px;
 
-  transform:
-    translateY(-1px);
+      padding-top: 17px;
 
-  filter:
-    brightness(1.03);
-}
+      color: #8497a5;
 
-button:disabled {
+      font-size: 11px;
 
-  opacity: .7;
+      line-height: 1.6;
+    }
 
-  cursor: wait;
+    .coracao {
+      color: var(--rosa);
 
-  transform: none;
-}
+      font-size: 14px;
+    }
 
+    /* =========================
+       RESPONSIVO
+    ========================= */
 
-/* =========================================
-   RODAPÉ
-========================================= */
+    @media (max-width: 900px) {
 
-.rodape {
+      body {
+        padding: 12px;
+      }
 
-  margin-top: 23px;
+      .login-container {
+        grid-template-columns: 1fr;
 
-  padding-top: 18px;
+        min-height: auto;
+      }
 
-  border-top:
-    1px solid #e7edf2;
+      .hospital {
+        min-height: 430px;
+      }
 
-  text-align: center;
+      .login-side {
+        padding: 30px 20px;
+      }
+    }
 
-  color: #8497a5;
+    @media (max-width: 520px) {
 
-  font-size: 11px;
+      .hospital {
+        min-height: 330px;
 
-  line-height: 1.6;
-}
+        padding: 25px;
+      }
 
-.rodape .coracao {
+      .hospital-text h1 {
+        font-size: 40px;
+      }
 
-  color: var(--pink);
+      .hospital-text h2 {
+        font-size: 13px;
 
-  font-size: 14px;
-}
+        letter-spacing: 3px;
+      }
 
+      .login-card {
+        padding: 28px 23px;
+      }
 
-/* =========================================
-   CELULAR / TABLET
-========================================= */
+      .logo h1 {
+        font-size: 26px;
+      }
+    }
 
-@media (max-width: 900px) {
-
-  body {
-    padding: 12px;
-  }
-
-  .login-shell {
-
-    grid-template-columns: 1fr;
-
-    min-height: auto;
-  }
-
-  .hero {
-
-    min-height: 390px;
-
-    padding: 25px;
-  }
-
-  .login-area {
-
-    padding: 28px 20px;
-  }
-
-  .login-card {
-
-    padding:
-      32px 26px 27px;
-  }
-}
-
-
-@media (max-width: 520px) {
-
-  .hero {
-
-    min-height: 300px;
-
-    background-position:
-      30% center;
-  }
-
-  .brand h1 {
-
-    font-size: 27px;
-  }
-
-  .login-card {
-
-    border-radius: 20px;
-  }
-}
-
-</style>
+  </style>
 </head>
 
 
 <body>
 
 
-<main class="login-shell">
+  <main class="login-container">
 
 
-  <!-- =====================================
-       FOTO DO HOSPITAL
-  ====================================== -->
+    <!-- =================================
+         IMAGEM / IDENTIDADE DO HOSPITAL
+    ================================== -->
 
-  <section
-    class="hero"
-    aria-label="Entrada do Hospital Sentinela">
-  </section>
+    <section class="hospital">
 
+      <div class="hospital-text">
 
-
-  <!-- =====================================
-       LOGIN
-  ====================================== -->
-
-  <section class="login-area">
-
-
-    <div class="login-card">
-
-
-      <!-- LOGO -->
-
-      <div class="brand">
-
-        <div
-          class="logo-mark"
-          aria-label="Logo Sentinela">
+        <div class="mini">
+          CUIDADO • TECNOLOGIA • HUMANIZAÇÃO
         </div>
 
-        <h1>SENTINELA</h1>
+        <h1>
+          SENTINELA
+        </h1>
 
-        <h2>HOSPITAL GERAL</h2>
+        <h2>
+          HOSPITAL GERAL
+        </h2>
 
         <p>
-          Cuidado em cada detalhe
+          Tecnologia e cuidado trabalhando juntos
+          para tornar o atendimento mais seguro,
+          organizado e humanizado.
         </p>
 
-        <div class="divider"></div>
-
       </div>
 
+    </section>
 
 
-      <!-- USUÁRIO -->
 
-      <div class="campo">
+    <!-- =================================
+         ÁREA DE LOGIN
+    ================================== -->
 
-        <label for="usuario">
-          Usuário
-        </label>
+    <section class="login-side">
 
-        <div class="input-box">
 
-          <span class="icone">
-            👤
-          </span>
+      <div class="login-card">
 
-          <input
-            id="usuario"
-            type="text"
-            placeholder="Digite seu usuário"
-            autocomplete="username">
+
+        <!-- LOGO -->
+
+        <div class="logo">
+
+          <div class="logo-icon"></div>
+
+          <h1>
+            SENTINELA
+          </h1>
+
+          <h2>
+            HOSPITAL GERAL
+          </h2>
+
+          <p>
+            Cuidado em cada detalhe
+          </p>
+
+          <div class="linha"></div>
 
         </div>
 
-      </div>
 
 
+        <!-- USUÁRIO -->
 
-      <!-- SENHA -->
+        <div class="campo">
 
-      <div class="campo">
+          <label for="usuario">
+            Usuário
+          </label>
 
-        <label for="senha">
-          Senha
-        </label>
+          <div class="input-container">
 
-        <div class="input-box">
+            <span class="icone">
+              👤
+            </span>
 
-          <span class="icone">
-            🔒
-          </span>
+            <input
+              type="text"
+              id="usuario"
+              placeholder="Digite seu usuário"
+              autocomplete="username"
+            >
 
-          <input
-            id="senha"
-            type="password"
-            placeholder="Digite sua senha"
-            autocomplete="current-password">
+          </div>
 
         </div>
 
+
+
+        <!-- SENHA -->
+
+        <div class="campo">
+
+          <label for="senha">
+            Senha
+          </label>
+
+          <div class="input-container">
+
+            <span class="icone">
+              🔒
+            </span>
+
+            <input
+              type="password"
+              id="senha"
+              placeholder="Digite sua senha"
+              autocomplete="current-password"
+            >
+
+          </div>
+
+        </div>
+
+
+
+        <!-- BOTÃO -->
+
+        <button
+          class="btn-entrar"
+          id="btnEntrar"
+          onclick="login()"
+        >
+          Entrar no sistema
+        </button>
+
+
+
+        <!-- RODAPÉ -->
+
+        <div class="rodape">
+
+          <span class="coracao">
+            ♥
+          </span>
+
+          Ambiente seguro e protegido
+
+          <br>
+
+          Sentinela Hospital Geral
+
+        </div>
+
+
       </div>
 
 
+    </section>
 
-      <!-- BOTÃO -->
 
-      <button
-        id="btnEntrar"
-        onclick="login()">
-
-        Entrar no sistema
-
-      </button>
+  </main>
 
 
 
-      <!-- RODAPÉ -->
+  <script>
 
-      <div class="rodape">
+    async function login() {
 
-        <span class="coracao">
-          ♥
-        </span>
+      const usuario =
+        document
+          .getElementById("usuario")
+          .value
+          .trim();
 
-        Ambiente seguro e protegido
+      const senha =
+        document
+          .getElementById("senha")
+          .value;
 
-        <br>
-
-        Sentinela Hospital Geral
-
-      </div>
-
-
-    </div>
-
-  </section>
-
-</main>
+      const botao =
+        document
+          .getElementById("btnEntrar");
 
 
+      if (!usuario || !senha) {
 
-<script>
+        alert(
+          "Por favor, preencha o usuário e a senha."
+        );
 
-
-/* =========================================
-   LOGIN
-========================================= */
-
-function login() {
-
-
-  const usuario =
-    document
-      .getElementById("usuario")
-      .value
-      .trim();
+        return;
+      }
 
 
-  const senha =
-    document
-      .getElementById("senha")
-      .value;
+      botao.disabled = true;
+
+      botao.innerText =
+        "Entrando...";
 
 
-  const botao =
-    document
-      .getElementById("btnEntrar");
+      try {
+
+        const resposta =
+          await fetch(
+            "/login",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body: JSON.stringify({
+                usuario: usuario,
+                senha: senha
+              })
+            }
+          );
 
 
+        if (!resposta.ok) {
 
-  /* =====================================
-     VALIDAÇÃO
-  ====================================== */
+          throw new Error(
+            "Erro no servidor"
+          );
 
-  if (!usuario || !senha) {
+        }
 
-    alert(
-      "Por favor, preencha o usuário e a senha."
+
+        const data =
+          await resposta.json();
+
+
+        /* =========================
+           TRIAGEM
+        ========================= */
+
+        if (
+          data.tipo === "triagem"
+        ) {
+
+          window.location.href =
+            "triagem.html";
+
+          return;
+        }
+
+
+        /* =========================
+           MÉDICO
+        ========================= */
+
+        if (
+          data.tipo === "medico"
+        ) {
+
+          window.location.href =
+            "medico.html";
+
+          return;
+        }
+
+
+        /* =========================
+           ATENDIMENTO
+        ========================= */
+
+        if (
+          data.tipo === "atendimento"
+        ) {
+
+          window.location.href =
+            "atendimento.html";
+
+          return;
+        }
+
+
+        /* =========================
+           LOGIN INVÁLIDO
+        ========================= */
+
+        alert(
+          "Usuário ou senha inválidos."
+        );
+
+
+        botao.disabled = false;
+
+        botao.innerText =
+          "Entrar no sistema";
+
+      }
+
+
+      catch (erro) {
+
+        console.error(
+          "Erro:",
+          erro
+        );
+
+
+        alert(
+          "Não foi possível conectar ao servidor."
+        );
+
+
+        botao.disabled = false;
+
+        botao.innerText =
+          "Entrar no sistema";
+
+      }
+
+    }
+
+
+    /* =========================
+       ENTER PARA ENTRAR
+    ========================= */
+
+    document.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          login();
+
+        }
+
+      }
     );
 
-    return;
-
-  }
-
-
-
-  /* =====================================
-     ESTADO DO BOTÃO
-  ====================================== */
-
-  botao.disabled = true;
-
-  botao.innerText =
-    "Entrando...";
-
-
-
-  /* =====================================
-     LOGIN
-  ====================================== */
-
-  fetch(
-    "/login",
-    {
-
-      method: "POST",
-
-      headers: {
-
-        "Content-Type":
-          "application/json"
-
-      },
-
-      body: JSON.stringify({
-
-        usuario: usuario,
-
-        senha: senha
-
-      })
-
-    }
-  )
-
-
-  .then(response => {
-
-    if (!response.ok) {
-
-      throw new Error(
-        "Erro no servidor"
-      );
-
-    }
-
-    return response.json();
-
-  })
-
-
-  .then(data => {
-
-
-    /* TRIAGEM */
-
-    if (
-      data.tipo ===
-      "triagem"
-    ) {
-
-      window.location.href =
-        "triagem.html";
-
-      return;
-
-    }
-
-
-    /* MÉDICO */
-
-    if (
-      data.tipo ===
-      "medico"
-    ) {
-
-      window.location.href =
-        "medico.html";
-
-      return;
-
-    }
-
-
-    /* ATENDIMENTO */
-
-    if (
-      data.tipo ===
-      "atendimento"
-    ) {
-
-      window.location.href =
-        "atendimento.html";
-
-      return;
-
-    }
-
-
-    /* LOGIN INVÁLIDO */
-
-    alert(
-      "Usuário ou senha inválidos."
-    );
-
-
-    botao.disabled = false;
-
-    botao.innerText =
-      "Entrar no sistema";
-
-  })
-
-
-  .catch(error => {
-
-    console.error(
-      "Erro:",
-      error
-    );
-
-
-    alert(
-      "Não foi possível conectar ao servidor."
-    );
-
-
-    botao.disabled = false;
-
-    botao.innerText =
-      "Entrar no sistema";
-
-  });
-
-}
-
-
-
-/* =========================================
-   ENTER PARA LOGIN
-========================================= */
-
-document.addEventListener(
-  "keydown",
-  function(event) {
-
-    if (
-      event.key ===
-      "Enter"
-    ) {
-
-      login();
-
-    }
-
-  }
-);
-
-
-</script>
+  </script>
 
 
 </body>
