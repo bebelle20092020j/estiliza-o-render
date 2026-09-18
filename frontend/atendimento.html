@@ -1,47 +1,199 @@
 <!DOCTYPE html>
-<html>
-<head><link rel="stylesheet" href="css/style.css">  <link rel="stylesheet" href="css/estilo-novo.css">
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Atendimento - Sentinela</title>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/estilo-novo.css">
 </head>
+
 <body>
+
 <div class="container">
-<h2>Atendimento</h2>
 
-<input id="nome" placeholder="Nome">
-<input id="cpf" placeholder="CPF">
-<input id="data" placeholder="data">
-<input id="sexo" placeholder="sexo">
-<input id="nome do responsavel" placeholder="nome do responsavel">
-<input id="estado civil" placeholder="estado civil">
-<input id="nome" placeholder="Nome">
-<input id="endereço" placeholder="endereço">
-<input id="telefone" placeholder="telefone">
-<input id="email" placeholder="email">
-<input id="contato de emergengia" placeholder="contato de emergengia">  
- 
+  <h2>Atendimento</h2>
 
-<select id="tipo">
-  <option>Convenio</option>
-  <option>Particular</option>
-</select>
+  <input
+    id="nome"
+    type="text"
+    placeholder="Nome do paciente"
+  >
 
-<input type="file" id="foto">
+  <input
+    id="cpf"
+    type="text"
+    placeholder="CPF"
+  >
 
-<button onclick="cadastrar()">Cadastrar</button>
+  <input
+    id="data"
+    type="text"
+    placeholder="Data de nascimento"
+  >
+
+  <input
+    id="sexo"
+    type="text"
+    placeholder="Sexo"
+  >
+
+  <input
+    id="responsavel"
+    type="text"
+    placeholder="Nome do responsável"
+  >
+
+  <input
+    id="estadoCivil"
+    type="text"
+    placeholder="Estado civil"
+  >
+
+  <input
+    id="endereco"
+    type="text"
+    placeholder="Endereço"
+  >
+
+  <input
+    id="telefone"
+    type="text"
+    placeholder="Telefone"
+  >
+
+  <input
+    id="email"
+    type="email"
+    placeholder="E-mail"
+  >
+
+  <input
+    id="contatoEmergencia"
+    type="text"
+    placeholder="Contato de emergência"
+  >
+
+  <select id="tipo">
+
+    <option value="Convenio">
+      Convênio
+    </option>
+
+    <option value="Particular">
+      Particular
+    </option>
+
+  </select>
+
+  <input
+    type="file"
+    id="foto"
+  >
+
+  <button
+    type="button"
+    onclick="cadastrar()"
+  >
+    Cadastrar
+  </button>
+
 </div>
 
+
 <script>
-function cadastrar(){
- fetch("/atendimento",{
-  method:"POST",
-  headers:{"Content-Type":"application/json"},
-  body: JSON.stringify({
-    nome: nome.value,
-    cpf: cpf.value,
-    tipo: tipo.value
-  })
- });
- alert("Paciente enviado para triagem");
+
+async function cadastrar() {
+
+  const nome =
+    document.getElementById("nome").value.trim();
+
+  const cpf =
+    document.getElementById("cpf").value.trim();
+
+  const tipo =
+    document.getElementById("tipo").value;
+
+
+  // Verifica se o nome foi preenchido
+  if (!nome) {
+
+    alert("Digite o nome do paciente.");
+
+    return;
+  }
+
+
+  try {
+
+    const resposta = await fetch("/atendimento", {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+
+        nome: nome,
+
+        cpf: cpf,
+
+        tipo: tipo
+
+      })
+
+    });
+
+
+    if (!resposta.ok) {
+
+      throw new Error(
+        "Erro ao cadastrar paciente."
+      );
+
+    }
+
+
+    const paciente =
+      await resposta.json();
+
+
+    console.log(
+      "Paciente cadastrado:",
+      paciente
+    );
+
+
+    alert(
+      "✅ Paciente cadastrado com sucesso!\n\n" +
+      "O paciente foi enviado para a triagem."
+    );
+
+
+    // Limpa os campos principais
+    document.getElementById("nome").value = "";
+    document.getElementById("cpf").value = "";
+
+
+  } catch (erro) {
+
+    console.error(erro);
+
+    alert(
+      "❌ Não foi possível cadastrar o paciente.\n" +
+      "Verifique se o servidor está funcionando."
+    );
+
+  }
+
 }
+
 </script>
+
 </body>
 </html>
