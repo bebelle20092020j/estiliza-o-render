@@ -19,7 +19,6 @@
       --azul-claro: #6fa8c7;
       --rosa: #c76f9d;
       --lilas: #9f92c8;
-      --branco: #ffffff;
       --fundo: #edf4f8;
       --texto: #24435b;
       --borda: #d9e5ee;
@@ -39,7 +38,7 @@
 
     .login-container {
       width: 100%;
-      max-width: 1350px;
+      max-width: 1400px;
       min-height: 730px;
 
       background: white;
@@ -49,11 +48,12 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
 
-      box-shadow: 0 25px 70px rgba(18, 62, 99, 0.20);
+      box-shadow:
+        0 25px 70px rgba(18, 62, 99, 0.20);
     }
 
     /* =========================
-       LADO DA IMAGEM
+       LADO DO HOSPITAL
        ========================= */
 
     .hospital {
@@ -64,7 +64,7 @@
       display: flex;
       align-items: flex-end;
 
-      padding: 50px;
+      padding: 52px;
 
       background: #7890a5;
     }
@@ -79,12 +79,15 @@
 
       object-fit: cover;
       object-position: center;
+
+      z-index: 0;
     }
 
     .hospital::after {
       content: "";
 
       position: absolute;
+
       inset: 0;
 
       background:
@@ -92,8 +95,10 @@
           to top,
           rgba(18, 62, 99, 0.78),
           rgba(18, 62, 99, 0.12) 68%,
-          rgba(18, 62, 99, 0.04)
+          rgba(18, 62, 99, 0.03)
         );
+
+      z-index: 1;
 
       pointer-events: none;
     }
@@ -105,10 +110,10 @@
 
       color: white;
 
-      max-width: 600px;
+      max-width: 620px;
     }
 
-    .hospital-text .mini {
+    .mini {
       font-size: 13px;
 
       letter-spacing: 3px;
@@ -118,10 +123,14 @@
       margin-bottom: 10px;
     }
 
-    .hospital-text h1 {
-      font-family: Georgia, "Times New Roman", serif;
+    .hospital h1 {
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
 
-      font-size: clamp(42px, 5vw, 70px);
+      font-size:
+        clamp(44px, 5vw, 72px);
 
       letter-spacing: 3px;
 
@@ -130,22 +139,20 @@
       margin-bottom: 8px;
     }
 
-    .hospital-text h2 {
+    .hospital h2 {
       font-size: 18px;
 
       letter-spacing: 5px;
 
-      font-weight: 600;
-
       margin-bottom: 15px;
     }
 
-    .hospital-text p {
+    .hospital p {
       font-size: 15px;
 
       line-height: 1.6;
 
-      max-width: 480px;
+      max-width: 500px;
     }
 
 
@@ -170,7 +177,7 @@
 
       justify-content: center;
 
-      padding: 50px;
+      padding: 48px;
 
       overflow: hidden;
     }
@@ -180,15 +187,16 @@
 
       position: absolute;
 
-      width: 300px;
-      height: 300px;
+      width: 310px;
+      height: 310px;
 
       border-radius: 50%;
 
-      background: rgba(199, 111, 157, 0.08);
+      background:
+        rgba(199, 111, 157, 0.08);
 
-      right: -150px;
-      top: -120px;
+      right: -155px;
+      top: -125px;
     }
 
     .login-side::after {
@@ -196,41 +204,45 @@
 
       position: absolute;
 
-      width: 210px;
-      height: 210px;
+      width: 220px;
+      height: 220px;
 
       border-radius: 50%;
 
-      background: rgba(159, 146, 200, 0.08);
+      background:
+        rgba(159, 146, 200, 0.08);
 
-      left: -110px;
-      bottom: -90px;
+      left: -115px;
+      bottom: -95px;
     }
 
 
     /* =========================
-       CARD DO LOGIN
+       CARD
        ========================= */
 
     .login-card {
       width: 100%;
 
-      max-width: 500px;
+      max-width: 520px;
 
       position: relative;
 
       z-index: 3;
 
-      background: rgba(255, 255, 255, 0.98);
+      background:
+        rgba(255, 255, 255, 0.98);
 
-      border: 1px solid var(--borda);
+      border:
+        1px solid var(--borda);
 
-      border-radius: 26px;
+      border-radius: 27px;
 
-      padding: 48px;
+      padding: 50px;
 
       box-shadow:
-        0 20px 50px rgba(18, 62, 99, 0.13);
+        0 20px 50px
+        rgba(18, 62, 99, 0.13);
     }
 
 
@@ -241,12 +253,12 @@
     .logo {
       text-align: center;
 
-      margin-bottom: 27px;
+      margin-bottom: 28px;
     }
 
     .logo-icon {
-      width: 78px;
-      height: 78px;
+      width: 80px;
+      height: 80px;
 
       margin: 0 auto 12px;
 
@@ -263,15 +275,13 @@
       display: flex;
 
       align-items: center;
+
       justify-content: center;
 
-      color: var(--azul-escuro);
+      color:
+        var(--azul-escuro);
 
-      font-family: Arial, sans-serif;
-
-      font-size: 78px;
-
-      line-height: 1;
+      font-size: 80px;
     }
 
     .logo-icon::after {
@@ -282,21 +292,26 @@
       left: 50%;
       top: 50%;
 
-      transform: translate(-50%, -50%);
+      transform:
+        translate(-50%, -50%);
 
       color: var(--rosa);
 
-      font-size: 27px;
+      font-size: 28px;
 
       font-weight: bold;
     }
 
     .logo h1 {
-      color: var(--azul-escuro);
+      color:
+        var(--azul-escuro);
 
-      font-family: Georgia, "Times New Roman", serif;
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
 
-      font-size: 34px;
+      font-size: 35px;
 
       letter-spacing: 2px;
     }
@@ -320,11 +335,12 @@
     }
 
     .linha {
-      width: 80px;
+      width: 82px;
 
       height: 3px;
 
-      margin: 19px auto 29px;
+      margin:
+        20px auto 30px;
 
       border-radius: 10px;
 
@@ -343,7 +359,7 @@
        ========================= */
 
     .campo {
-      margin-bottom: 19px;
+      margin-bottom: 20px;
     }
 
     .campo label {
@@ -365,11 +381,12 @@
     .icone {
       position: absolute;
 
-      left: 16px;
+      left: 17px;
 
       top: 50%;
 
-      transform: translateY(-50%);
+      transform:
+        translateY(-50%);
 
       font-size: 17px;
 
@@ -381,9 +398,10 @@
     .campo input {
       width: 100%;
 
-      height: 58px;
+      height: 60px;
 
-      border: 1px solid var(--borda);
+      border:
+        1px solid var(--borda);
 
       border-radius: 14px;
 
@@ -394,7 +412,7 @@
       font-size: 15px;
 
       padding:
-        0 16px 0 46px;
+        0 16px 0 47px;
 
       outline: none;
 
@@ -406,12 +424,14 @@
     }
 
     .campo input:focus {
-      border-color: var(--azul-claro);
+      border-color:
+        var(--azul-claro);
 
       background: white;
 
       box-shadow:
-        0 0 0 4px rgba(76, 143, 181, 0.12);
+        0 0 0 4px
+        rgba(76, 143, 181, 0.12);
     }
 
 
@@ -422,7 +442,7 @@
     .btn-entrar {
       width: 100%;
 
-      height: 58px;
+      height: 60px;
 
       border: none;
 
@@ -444,7 +464,8 @@
       cursor: pointer;
 
       box-shadow:
-        0 10px 22px rgba(45, 111, 159, 0.22);
+        0 10px 22px
+        rgba(45, 111, 159, 0.22);
 
       transition: 0.2s;
 
@@ -452,9 +473,11 @@
     }
 
     .btn-entrar:hover {
-      transform: translateY(-1px);
+      transform:
+        translateY(-1px);
 
-      filter: brightness(1.04);
+      filter:
+        brightness(1.04);
     }
 
     .btn-entrar:disabled {
@@ -473,9 +496,10 @@
     .rodape {
       text-align: center;
 
-      border-top: 1px solid #e7edf2;
+      border-top:
+        1px solid #e7edf2;
 
-      margin-top: 25px;
+      margin-top: 26px;
 
       padding-top: 18px;
 
@@ -494,7 +518,7 @@
 
 
     /* =========================
-       RESPONSIVO
+       CELULAR
        ========================= */
 
     @media (max-width: 900px) {
@@ -527,18 +551,19 @@
         padding: 25px;
       }
 
-      .hospital-text h1 {
+      .hospital h1 {
         font-size: 40px;
       }
 
-      .hospital-text h2 {
+      .hospital h2 {
         font-size: 13px;
 
         letter-spacing: 3px;
       }
 
       .login-card {
-        padding: 30px 23px;
+        padding:
+          30px 23px;
       }
 
       .logo h1 {
@@ -556,7 +581,7 @@
 
 
     <!-- =========================
-         IMAGEM DO HOSPITAL
+         HOSPITAL
          ========================= -->
 
     <section class="hospital">
@@ -621,8 +646,6 @@
         </div>
 
 
-        <!-- USUÁRIO -->
-
         <div class="campo">
 
           <label for="usuario">
@@ -646,8 +669,6 @@
 
         </div>
 
-
-        <!-- SENHA -->
 
         <div class="campo">
 
@@ -673,8 +694,6 @@
         </div>
 
 
-        <!-- BOTÃO -->
-
         <button
           class="btn-entrar"
           id="btnEntrar"
@@ -683,8 +702,6 @@
           Entrar no sistema
         </button>
 
-
-        <!-- RODAPÉ -->
 
         <div class="rodape">
 
@@ -708,10 +725,6 @@
   </main>
 
 
-  <!-- =========================
-       LOGIN ORIGINAL
-       ========================= -->
-
   <script>
 
     async function login() {
@@ -722,12 +735,10 @@
           .value
           .trim();
 
-
       const senha =
         document
           .getElementById("senha")
           .value;
-
 
       const botao =
         document
@@ -831,17 +842,14 @@
           erro
         );
 
-
         alert(
           "Não foi possível conectar ao servidor."
         );
-
 
         botao.disabled = false;
 
         botao.innerText =
           "Entrar no sistema";
-
       }
 
     }
