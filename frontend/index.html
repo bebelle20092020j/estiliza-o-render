@@ -104,10 +104,6 @@
       pointer-events: none;
     }
 
-    /* =========================
-       TEXTO PRINCIPAL DO HOSPITAL
-       ========================= */
-
     .hospital-text {
       position: relative;
 
@@ -116,6 +112,8 @@
       color: white;
 
       max-width: 620px;
+
+      transform: translateY(-150px);
     }
 
     .mini {
@@ -153,7 +151,7 @@
     }
 
     /* =========================
-       FRASE INFERIOR
+       FRASE COM CORAÇÃO
        ========================= */
 
     .hospital-slogan {
@@ -165,6 +163,7 @@
       z-index: 3;
 
       display: flex;
+
       align-items: center;
 
       color: white;
@@ -187,7 +186,9 @@
       inset: 0;
 
       display: flex;
+
       align-items: center;
+
       justify-content: center;
 
       color: white;
@@ -217,6 +218,7 @@
 
     .slogan-line {
       width: 2px;
+
       height: 48px;
 
       margin: 0 16px;
@@ -596,7 +598,7 @@
     }
 
     /* =========================
-       TABLET / CELULAR
+       CELULAR
        ========================= */
 
     @media (max-width: 900px) {
@@ -620,16 +622,16 @@
       }
     }
 
-    /* =========================
-       CELULAR
-       ========================= */
-
     @media (max-width: 520px) {
 
       .hospital {
         min-height: 330px;
 
         padding: 25px;
+      }
+
+      .hospital-text {
+        transform: translateY(-55px);
       }
 
       .hospital h1 {
@@ -644,6 +646,7 @@
 
       .hospital-slogan {
         left: 25px;
+
         bottom: 25px;
       }
 
@@ -697,6 +700,9 @@
 
     <section class="hospital">
 
+      <!-- COLOQUE A NOVA IMAGEM NA PASTA frontend
+           COM O NOME: sentinela-hospital-bg.jpg -->
+
       <img
         src="file_000000009c78820e97ea46b3f62877cf.png"
         alt="Hospital Geral Sentinela"
@@ -718,8 +724,6 @@
 
       </div>
 
-
-      <!-- FRASE INFERIOR -->
 
       <div class="hospital-slogan">
 
