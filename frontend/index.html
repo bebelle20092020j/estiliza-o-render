@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -103,17 +104,19 @@
       pointer-events: none;
     }
 
+    /* =========================
+       TEXTO PRINCIPAL DO HOSPITAL
+       ========================= */
+
     .hospital-text {
-  position: relative;
+      position: relative;
 
-  z-index: 2;
+      z-index: 2;
 
-  color: white;
+      color: white;
 
-  max-width: 620px;
-
-  transform: translateY(-150px);
-}
+      max-width: 620px;
+    }
 
     .mini {
       font-size: 13px;
@@ -149,15 +152,93 @@
       margin-bottom: 15px;
     }
 
-    .hospital p {
-  font-size: 15px;
+    /* =========================
+       FRASE INFERIOR
+       ========================= */
 
-  line-height: 1.6;
+    .hospital-slogan {
+      position: absolute;
 
-  max-width: 500px;
+      left: 52px;
+      bottom: 35px;
 
-  transform: translateY(65px);
-}
+      z-index: 3;
+
+      display: flex;
+      align-items: center;
+
+      color: white;
+    }
+
+    .slogan-icon {
+      width: 52px;
+      height: 52px;
+
+      position: relative;
+
+      flex-shrink: 0;
+    }
+
+    .slogan-icon::before {
+      content: "♡";
+
+      position: absolute;
+
+      inset: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      color: white;
+
+      font-size: 52px;
+
+      line-height: 1;
+    }
+
+    .slogan-icon::after {
+      content: "+";
+
+      position: absolute;
+
+      left: 50%;
+      top: 50%;
+
+      transform:
+        translate(-50%, -50%);
+
+      color: var(--rosa);
+
+      font-size: 18px;
+
+      font-weight: bold;
+    }
+
+    .slogan-line {
+      width: 2px;
+      height: 48px;
+
+      margin: 0 16px;
+
+      background: rgba(255, 255, 255, 0.8);
+
+      border-radius: 5px;
+    }
+
+    .hospital-slogan p {
+      margin: 0;
+
+      max-width: 360px;
+
+      color: white;
+
+      font-size: 15px;
+
+      line-height: 1.45;
+
+      font-weight: 500;
+    }
 
     /* =========================
        LADO DO LOGIN
@@ -515,7 +596,7 @@
     }
 
     /* =========================
-       CELULAR
+       TABLET / CELULAR
        ========================= */
 
     @media (max-width: 900px) {
@@ -539,19 +620,16 @@
       }
     }
 
+    /* =========================
+       CELULAR
+       ========================= */
+
     @media (max-width: 520px) {
 
       .hospital {
         min-height: 330px;
 
         padding: 25px;
-      }
-        .hospital-text {
-    transform: translateY(-55px);
-      }
-
-        .hospital p {
-    transform: translateY(30px);
       }
 
       .hospital h1 {
@@ -562,6 +640,38 @@
         font-size: 13px;
 
         letter-spacing: 3px;
+      }
+
+      .hospital-slogan {
+        left: 25px;
+        bottom: 25px;
+      }
+
+      .slogan-icon {
+        width: 44px;
+        height: 44px;
+      }
+
+      .slogan-icon::before {
+        font-size: 44px;
+      }
+
+      .slogan-icon::after {
+        font-size: 15px;
+      }
+
+      .slogan-line {
+        height: 42px;
+
+        margin: 0 12px;
+      }
+
+      .hospital-slogan p {
+        max-width: 270px;
+
+        font-size: 13px;
+
+        line-height: 1.4;
       }
 
       .login-card {
@@ -587,9 +697,6 @@
 
     <section class="hospital">
 
-      <!-- COLOQUE A NOVA IMAGEM NA PASTA frontend
-           COM O NOME: sentinela-hospital-bg.jpg -->
-
       <img
         src="file_000000009c78820e97ea46b3f62877cf.png"
         alt="Hospital Geral Sentinela"
@@ -609,10 +716,19 @@
           HOSPITAL GERAL
         </h2>
 
+      </div>
+
+
+      <!-- FRASE INFERIOR -->
+
+      <div class="hospital-slogan">
+
+        <div class="slogan-icon"></div>
+
+        <div class="slogan-line"></div>
+
         <p>
-          Tecnologia e cuidado trabalhando juntos
-          para tornar o atendimento mais eficiente,
-          organizado e seguro.
+          Cuidado e tecnologia para um atendimento mais seguro.
         </p>
 
       </div>
