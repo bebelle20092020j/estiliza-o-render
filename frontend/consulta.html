@@ -1,109 +1,111 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Consulta médica - Sentinela</title>
 
   <link rel="stylesheet" href="css/style.css">
 
   <style>
-    .topo{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap
+    .topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:12px
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
     }
 
-    .campo{
-      display:flex;
-      flex-direction:column
+    .campo {
+      display: flex;
+      flex-direction: column;
     }
 
-    .campo label{
-      font-weight:bold;
-      margin-top:10px;
-      color:#333
+    .campo label {
+      font-weight: bold;
+      margin-top: 10px;
+      color: #333;
     }
 
     .campo input,
     .campo select,
-    .campo textarea{
-      box-sizing:border-box
+    .campo textarea {
+      box-sizing: border-box;
     }
 
-    .campo.full{
-      grid-column:1/-1
+    .campo.full {
+      grid-column: 1 / -1;
     }
 
-    .acoes{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:18px
+    .acoes {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
     }
 
-    .acoes button{
-      flex:1;
-      min-width:180px
+    .acoes button {
+      flex: 1;
+      min-width: 180px;
     }
 
-    .btn-sec{
-      background:#6c757d
+    .btn-sec {
+      background: #6c757d;
     }
 
-    .btn-sec:hover{
-      background:#545b62
+    .btn-sec:hover {
+      background: #545b62;
     }
 
-    .aviso{
-      padding:12px;
-      border-radius:8px;
-      background:#f0f4ff;
-      border:1px solid #d0d8f0;
-      color:#34495e;
-      margin:15px 0
+    .aviso {
+      padding: 12px;
+      border-radius: 8px;
+      background: #f0f4ff;
+      border: 1px solid #d0d8f0;
+      color: #34495e;
+      margin: 15px 0;
     }
 
-    @media(max-width:650px){
-      .grid{
-        grid-template-columns:1fr
+    @media(max-width:650px) {
+      .grid {
+        grid-template-columns: 1fr;
       }
     }
 
-    @media print{
-      body{
-        background:white
+    @media print {
+      body {
+        background: white;
       }
 
-      .container{
-        width:100%;
-        max-width:none;
-        box-shadow:none;
-        margin:0;
-        padding:0
+      .container {
+        width: 100%;
+        max-width: none;
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
       }
 
       .acoes,
-      .aviso{
-        display:none
+      .aviso {
+        display: none;
       }
 
       input,
       select,
-      textarea{
-        border:1px solid #999!important
+      textarea {
+        border: 1px solid #999 !important;
       }
 
-      .topo button{
-        display:none
+      .topo button {
+        display: none;
       }
     }
   </style>
@@ -113,570 +115,516 @@
 
 <body>
 
-<div class="container">
+  <div class="container">
 
-  <div class="topo">
-    <h2 style="margin:0">🩺 Consulta médica</h2>
-
-    <button
-      type="button"
-      style="width:auto"
-      onclick="window.close()"
-    >
-      Voltar
-    </button>
-  </div>
-
-
-  <div class="aviso">
-    Preencha os dados da consulta. Ao final, clique em
-    <b>Gerar PDF de alta</b>
-    para criar o documento com as informações registradas.
-  </div>
-
-
-  <form id="consultaForm">
-
-    <div class="grid">
-
-      <div class="campo">
-        <label for="paciente">
-          Paciente *
-        </label>
-
-        <input
-          id="paciente"
-          required
-          placeholder="Nome completo"
-        >
-      </div>
-
-
-      <div class="campo">
-        <label for="data">
-          Data da consulta *
-        </label>
-
-        <input
-          id="data"
-          type="date"
-          required
-        >
-      </div>
-
-
-      <div class="campo">
-        <label for="medico">
-          Médico responsável *
-        </label>
-
-        <input
-          id="medico"
-          required
-          placeholder="Nome do médico"
-        >
-      </div>
-
-
-      <div class="campo">
-        <label for="crm">
-          CRM
-        </label>
-
-        <input
-          id="crm"
-          placeholder="Registro profissional"
-        >
-      </div>
-
-
-      <div class="campo">
-        <label for="sintomas">
-          Queixa principal / sintomas
-        </label>
-
-        <textarea
-          id="sintomas"
-          placeholder="Relato do paciente e sintomas apresentados"
-        ></textarea>
-      </div>
-
-
-      <div class="campo">
-        <label for="sinais">
-          Sinais vitais
-        </label>
-
-        <textarea
-          id="sinais"
-          placeholder="Pressão, temperatura, frequência cardíaca etc."
-        ></textarea>
-      </div>
-
-
-      <div class="campo full">
-        <label for="diagnostico">
-          Diagnóstico / avaliação clínica *
-        </label>
-
-        <textarea
-          id="diagnostico"
-          required
-          placeholder="Informe o diagnóstico ou avaliação clínica"
-        ></textarea>
-      </div>
-
-
-      <div class="campo full">
-        <label for="medicacao">
-          Medicação / prescrição
-        </label>
-
-        <textarea
-          id="medicacao"
-          placeholder="Medicamento, dose, via e frequência. Se não houver, escreva 'Não prescrita'."
-        ></textarea>
-      </div>
-
-
-      <div class="campo full">
-        <label for="orientacoes">
-          Orientações ao paciente
-        </label>
-
-        <textarea
-          id="orientacoes"
-          placeholder="Cuidados, recomendações e sinais de alerta"
-        ></textarea>
-      </div>
-
-
-      <div class="campo">
-        <label for="retorno">
-          Retorno recomendado
-        </label>
-
-        <input
-          id="retorno"
-          placeholder="Ex.: Em 7 dias ou se necessário"
-        >
-      </div>
-
-
-      <!-- CONDIÇÃO NA ALTA -->
-
-      <div class="campo">
-
-        <label for="condicao">
-          Condição na alta *
-        </label>
-
-        <select
-          id="condicao"
-          required
-          onchange="verificarInternacao()"
-        >
-          <option value="Estável">
-            Estável
-          </option>
-
-          <option value="Melhorado">
-            Melhorado
-          </option>
-
-          <option value="Sem alterações">
-            Sem alterações
-          </option>
-
-          <option value="Encaminhado">
-            Encaminhado para outro serviço
-          </option>
-
-          <option value="Internação">
-            Internação
-          </option>
-        </select>
-
-      </div>
-
-
-      <!-- LOCAL DA INTERNAÇÃO -->
-
-      <div
-        class="campo"
-        id="campoInternacao"
-        style="display:none;"
-      >
-
-        <label for="localInternacao">
-          Encaminhar para *
-        </label>
-
-        <select id="localInternacao">
-
-          <option value="">
-            Selecione o quarto ou sala
-          </option>
-
-          <option value="Quarto 101">
-            Quarto 101
-          </option>
-
-          <option value="Quarto 102">
-            Quarto 102
-          </option>
-
-          <option value="Quarto 103">
-            Quarto 103
-          </option>
-
-          <option value="Quarto 104">
-            Quarto 104
-          </option>
-
-          <option value="Sala de internação 01">
-            Sala de internação 01
-          </option>
-
-          <option value="Sala de internação 02">
-            Sala de internação 02
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div class="campo full">
-
-        <label for="observacoes">
-          Observações adicionais
-        </label>
-
-        <textarea
-          id="observacoes"
-          placeholder="Outras informações importantes"
-        ></textarea>
-
-      </div>
-
-    </div>
-
-
-    <div class="acoes">
-
-      <button type="submit">
-        💾 Salvar consulta
-      </button>
+    <div class="topo">
+      <h2 style="margin:0">🩺 Consulta médica</h2>
 
       <button
         type="button"
-        class="btn-sec"
-        onclick="gerarPDF()"
-      >
-        📄 Gerar PDF de alta
+        style="width:auto"
+        onclick="window.close()">
+        Voltar
       </button>
-
     </div>
 
-  </form>
+    <div class="aviso">
+      Preencha os dados da consulta. Ao final, clique em
+      <b>Gerar documento</b>
+      para criar o documento com as informações registradas.
+    </div>
 
-</div>
+    <form id="consultaForm">
 
+      <div class="grid">
 
-<script>
+        <div class="campo">
+          <label for="paciente">
+            Paciente *
+          </label>
 
-const ids = [
-  'paciente',
-  'data',
-  'medico',
-  'crm',
-  'sintomas',
-  'sinais',
-  'diagnostico',
-  'medicacao',
-  'orientacoes',
-  'retorno',
-  'condicao',
-  'localInternacao',
-  'observacoes'
-];
+          <input
+            id="paciente"
+            required
+            placeholder="Nome completo">
+        </div>
 
+        <div class="campo">
+          <label for="data">
+            Data da consulta *
+          </label>
 
-document.getElementById('data').value =
-  new Date().toISOString().slice(0,10);
+          <input
+            id="data"
+            type="date"
+            required>
+        </div>
 
+        <div class="campo">
+          <label for="medico">
+            Médico responsável *
+          </label>
 
-const pacienteParam =
-  new URLSearchParams(window.location.search)
-    .get('paciente');
+          <input
+            id="medico"
+            required
+            placeholder="Nome do médico">
+        </div>
 
+        <div class="campo">
+          <label for="crm">
+            CRM
+          </label>
 
-if(pacienteParam){
+          <input
+            id="crm"
+            placeholder="Registro profissional">
+        </div>
 
-  document.getElementById('paciente').value =
-    pacienteParam;
+        <div class="campo">
+          <label for="sintomas">
+            Queixa principal / sintomas
+          </label>
 
-}
+          <textarea
+            id="sintomas"
+            placeholder="Relato do paciente e sintomas apresentados"></textarea>
+        </div>
 
+        <div class="campo">
+          <label for="sinais">
+            Sinais vitais
+          </label>
 
-/* =========================
-   MOSTRAR INTERNAÇÃO
-   ========================= */
+          <textarea
+            id="sinais"
+            placeholder="Pressão, temperatura, frequência cardíaca etc."></textarea>
+        </div>
 
-function verificarInternacao(){
+        <div class="campo full">
+          <label for="diagnostico">
+            Diagnóstico / avaliação clínica *
+          </label>
 
-  const condicao =
-    document.getElementById('condicao').value;
+          <textarea
+            id="diagnostico"
+            required
+            placeholder="Informe o diagnóstico ou avaliação clínica"></textarea>
+        </div>
 
-  const campo =
-    document.getElementById('campoInternacao');
+        <div class="campo full">
+          <label for="medicacao">
+            Medicação / prescrição
+          </label>
 
-  const local =
-    document.getElementById('localInternacao');
+          <textarea
+            id="medicacao"
+            placeholder="Medicamento, dose, via e frequência. Se não houver, escreva 'Não prescrita'."></textarea>
+        </div>
 
+        <div class="campo full">
+          <label for="orientacoes">
+            Orientações ao paciente
+          </label>
 
-  if(condicao === 'Internação'){
+          <textarea
+            id="orientacoes"
+            placeholder="Cuidados, recomendações e sinais de alerta"></textarea>
+        </div>
 
-    campo.style.display = 'flex';
+        <div class="campo">
+          <label for="retorno">
+            Retorno recomendado
+          </label>
 
-    local.required = true;
+          <input
+            id="retorno"
+            placeholder="Ex.: Em 7 dias ou se necessário">
+        </div>
 
-  }else{
+        <div class="campo">
 
-    campo.style.display = 'none';
+          <label for="condicao">
+            Condição do paciente *
+          </label>
 
-    local.required = false;
+          <select
+            id="condicao"
+            required
+            onchange="verificarInternacao()">
 
-    local.value = '';
+            <option value="Estável">
+              Estável
+            </option>
 
-  }
+            <option value="Melhorado">
+              Melhorado
+            </option>
 
-}
+            <option value="Sem alterações">
+              Sem alterações
+            </option>
 
+            <option value="Encaminhado">
+              Encaminhado para outro serviço
+            </option>
 
-/* =========================
-   PEGAR DADOS
-   ========================= */
+            <option value="Internação">
+              Internação
+            </option>
 
-function dados(){
+          </select>
 
-  const o = {};
+        </div>
 
-  ids.forEach(id => {
+        <!-- LOCAL DA INTERNAÇÃO -->
 
-    o[id] =
-      document.getElementById(id).value.trim();
+        <div
+          class="campo"
+          id="campoInternacao"
+          style="display:none;">
 
-  });
+          <label for="localInternacao">
+            Encaminhar para *
+          </label>
 
-  return o;
+          <select id="localInternacao">
 
-}
+            <option value="">
+              Selecione o quarto ou sala
+            </option>
 
+            <option value="Quarto 101">
+              Quarto 101
+            </option>
 
-/* =========================
-   SALVAR CONSULTA
-   ========================= */
+            <option value="Quarto 102">
+              Quarto 102
+            </option>
 
-async function salvarConsulta(silencioso=false){
+            <option value="Quarto 103">
+              Quarto 103
+            </option>
 
-  const d = dados();
+            <option value="Quarto 104">
+              Quarto 104
+            </option>
 
+            <option value="Sala de internação 01">
+              Sala de internação 01
+            </option>
 
-  if(
-    !d.paciente ||
-    !d.data ||
-    !d.medico ||
-    !d.diagnostico
-  ){
+            <option value="Sala de internação 02">
+              Sala de internação 02
+            </option>
 
-    if(!silencioso){
+          </select>
 
-      alert(
-        'Preencha os campos obrigatórios: paciente, data, médico e diagnóstico.'
-      );
+        </div>
+
+        <div class="campo full">
+
+          <label for="observacoes">
+            Observações adicionais
+          </label>
+
+          <textarea
+            id="observacoes"
+            placeholder="Outras informações importantes"></textarea>
+
+        </div>
+
+      </div>
+
+      <div class="acoes">
+
+        <button type="submit">
+          💾 Salvar consulta
+        </button>
+
+        <button
+          type="button"
+          class="btn-sec"
+          onclick="gerarPDF()">
+          📄 Gerar documento
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+  <script>
+
+    const ids = [
+      'paciente',
+      'data',
+      'medico',
+      'crm',
+      'sintomas',
+      'sinais',
+      'diagnostico',
+      'medicacao',
+      'orientacoes',
+      'retorno',
+      'condicao',
+      'localInternacao',
+      'observacoes'
+    ];
+
+    document.getElementById('data').value =
+      new Date().toISOString().slice(0, 10);
+
+    const pacienteParam =
+      new URLSearchParams(window.location.search)
+        .get('paciente');
+
+    if (pacienteParam) {
+      document.getElementById('paciente').value =
+        pacienteParam;
+    }
+
+    /* =========================
+       MOSTRAR INTERNAÇÃO
+       ========================= */
+
+    function verificarInternacao() {
+
+      const condicao =
+        document.getElementById('condicao').value;
+
+      const campo =
+        document.getElementById('campoInternacao');
+
+      const local =
+        document.getElementById('localInternacao');
+
+      if (condicao === 'Internação') {
+
+        campo.style.display = 'flex';
+
+        local.required = true;
+
+      } else {
+
+        campo.style.display = 'none';
+
+        local.required = false;
+
+        local.value = '';
+
+      }
 
     }
 
-    return false;
-  }
+    /* =========================
+       PEGAR DADOS
+       ========================= */
 
+    function dados() {
 
-  if(
-    d.condicao === 'Internação' &&
-    !d.localInternacao
-  ){
+      const o = {};
 
-    if(!silencioso){
+      ids.forEach(id => {
 
-      alert(
-        'Selecione o quarto ou sala para a internação.'
-      );
+        o[id] =
+          document.getElementById(id).value.trim();
+
+      });
+
+      return o;
 
     }
 
-    return false;
-  }
+    /* =========================
+       SALVAR CONSULTA
+       ========================= */
 
+    async function salvarConsulta(silencioso = false) {
 
-  try{
+      const d = dados();
 
-    const r =
-      await fetch(
-        '/consulta',
-        {
-          method:'POST',
+      if (
+        !d.paciente ||
+        !d.data ||
+        !d.medico ||
+        !d.diagnostico
+      ) {
 
-          headers:{
-            'Content-Type':
-              'application/json'
-          },
+        if (!silencioso) {
 
-          body:
-            JSON.stringify(d)
+          alert(
+            'Preencha os campos obrigatórios: paciente, data, médico e diagnóstico.'
+          );
+
+        }
+
+        return false;
+      }
+
+      if (
+        d.condicao === 'Internação' &&
+        !d.localInternacao
+      ) {
+
+        if (!silencioso) {
+
+          alert(
+            'Selecione o quarto ou sala para a internação.'
+          );
+
+        }
+
+        return false;
+      }
+
+      try {
+
+        const r =
+          await fetch(
+            '/consulta',
+            {
+              method: 'POST',
+
+              headers: {
+                'Content-Type':
+                  'application/json'
+              },
+
+              body:
+                JSON.stringify(d)
+            }
+          );
+
+        if (!r.ok)
+          throw Error();
+
+        if (!silencioso) {
+
+          alert(
+            '✅ Consulta salva com sucesso!'
+          );
+
+        }
+
+        return true;
+
+      } catch (e) {
+
+        if (!silencioso) {
+
+          alert(
+            'Não foi possível salvar a consulta. Verifique se o servidor está ativo.'
+          );
+
+        }
+
+        return false;
+
+      }
+
+    }
+
+    document
+      .getElementById('consultaForm')
+      .addEventListener(
+        'submit',
+        e => {
+
+          e.preventDefault();
+
+          salvarConsulta();
+
         }
       );
 
+    /* =========================
+       ESCAPAR TEXTO DO DOCUMENTO
+       ========================= */
 
-    if(!r.ok)
-      throw Error();
+    function escapar(v) {
 
+      return String(v || '').replace(
+        /[&<>"']/g,
 
-    if(!silencioso){
+        c => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        }[c])
 
-      alert(
-        '✅ Consulta salva com sucesso!'
       );
 
     }
 
+    /* =========================
+       GERAR DOCUMENTO
+       ========================= */
 
-    return true;
+    async function gerarPDF() {
 
-  }catch(e){
+      const d = dados();
 
-    if(!silencioso){
+      if (
+        !d.paciente ||
+        !d.data ||
+        !d.medico ||
+        !d.diagnostico
+      ) {
 
-      alert(
-        'Não foi possível salvar a consulta. Verifique se o servidor está ativo.'
-      );
+        alert(
+          'Preencha os campos obrigatórios antes de gerar o documento.'
+        );
 
-    }
+        return;
 
-    return false;
+      }
 
-  }
+      if (
+        d.condicao === 'Internação' &&
+        !d.localInternacao
+      ) {
 
-}
+        alert(
+          'Selecione o quarto ou sala para a internação antes de gerar o documento.'
+        );
 
+        return;
 
-document
-  .getElementById('consultaForm')
-  .addEventListener(
-    'submit',
-    e => {
+      }
 
-      e.preventDefault();
+      await salvarConsulta(true);
 
-      salvarConsulta();
+      const w =
+        window.open(
+          '',
+          '_blank'
+        );
 
-    }
-  );
+      if (!w) {
 
+        alert(
+          'Permita pop-ups para gerar o documento.'
+        );
 
-/* =========================
-   ESCAPAR TEXTO DO PDF
-   ========================= */
+        return;
 
-function escapar(v){
+      }
 
-  return String(v || '').replace(
-    /[&<>"']/g,
-    c => ({
-      '&':'&amp;',
-      '<':'&lt;',
-      '>':'&gt;',
-      '"':'&quot;',
-      "'":'&#39;'
-    }[c])
-  );
+      const localInternacaoPDF =
+        d.condicao === 'Internação'
+          ? `
+            <p>
+              <b>Local da internação:</b>
+              ${escapar(d.localInternacao)}
+            </p>
+          `
+          : '';
 
-}
-
-
-/* =========================
-   GERAR PDF
-   ========================= */
-
-async function gerarPDF(){
-
-  const d = dados();
-
-
-  if(
-    !d.paciente ||
-    !d.data ||
-    !d.medico ||
-    !d.diagnostico
-  ){
-
-    alert(
-      'Preencha os campos obrigatórios antes de gerar o PDF.'
-    );
-
-    return;
-
-  }
-
-
-  if(
-    d.condicao === 'Internação' &&
-    !d.localInternacao
-  ){
-
-    alert(
-      'Selecione o quarto ou sala para a internação antes de gerar o PDF.'
-    );
-
-    return;
-
-  }
-
-
-  await salvarConsulta(true);
-
-
-  const w =
-    window.open(
-      '',
-      '_blank'
-    );
-
-
-  if(!w){
-
-    alert(
-      'Permita pop-ups para gerar o PDF.'
-    );
-
-    return;
-
-  }
-
-
-  const localInternacaoPDF =
-    d.condicao === 'Internação'
-      ? `
-        <p>
-          <b>Local da internação:</b>
-          ${escapar(d.localInternacao)}
-        </p>
-      `
-      : '';
-
-
-  w.document.write(`
+      w.document.write(`
 
 <!doctype html>
 
@@ -687,51 +635,50 @@ async function gerarPDF(){
 <meta charset="utf-8">
 
 <title>
-Alta - ${escapar(d.paciente)}
+Documento - ${escapar(d.paciente)}
 </title>
-
 
 <style>
 
-body{
-  font-family:Arial;
-  margin:40px;
-  color:#222
+body {
+  font-family: Arial;
+  margin: 40px;
+  color: #222;
 }
 
-h1{
-  text-align:center;
-  font-size:22px
+h1 {
+  text-align: center;
+  font-size: 22px;
 }
 
-h2{
-  font-size:16px;
-  border-bottom:1px solid #aaa;
-  padding-bottom:5px;
-  margin-top:24px
+h2 {
+  font-size: 16px;
+  border-bottom: 1px solid #aaa;
+  padding-bottom: 5px;
+  margin-top: 24px;
 }
 
-.linha{
-  margin:8px 0;
-  white-space:pre-wrap
+.linha {
+  margin: 8px 0;
+  white-space: pre-wrap;
 }
 
-.rodape{
-  margin-top:45px;
-  text-align:center
+.rodape {
+  margin-top: 45px;
+  text-align: center;
 }
 
-.internacao{
-  margin-top:10px;
-  padding:10px;
-  border:1px solid #bbb;
-  border-radius:6px;
+.internacao {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
 }
 
-@media print{
+@media print {
 
-  button{
-    display:none
+  button {
+    display: none;
   }
 
 }
@@ -740,20 +687,16 @@ h2{
 
 </head>
 
-
 <body>
 
-
 <h1>
-DOCUMENTO DE ALTA / CONSULTA MÉDICA
+DOCUMENTO / CONSULTA MÉDICA
 </h1>
-
 
 <p>
 <b>Paciente:</b>
 ${escapar(d.paciente)}
 </p>
-
 
 <p>
 
@@ -772,66 +715,54 @@ ${escapar(d.crm)}
 
 </p>
 
-
 <h2>
 Queixa principal / sintomas
 </h2>
 
-
 <div class="linha">
-${escapar(d.sintomas)||'Não informado'}
+${escapar(d.sintomas) || 'Não informado'}
 </div>
-
 
 <h2>
 Sinais vitais
 </h2>
 
-
 <div class="linha">
-${escapar(d.sinais)||'Não informado'}
+${escapar(d.sinais) || 'Não informado'}
 </div>
-
 
 <h2>
 Diagnóstico / avaliação clínica
 </h2>
 
-
 <div class="linha">
 ${escapar(d.diagnostico)}
 </div>
-
 
 <h2>
 Medicação / prescrição
 </h2>
 
-
 <div class="linha">
-${escapar(d.medicacao)||'Não prescrita'}
+${escapar(d.medicacao) || 'Não prescrita'}
 </div>
-
 
 <h2>
 Orientações
 </h2>
 
-
 <div class="linha">
-${escapar(d.orientacoes)||'Não informado'}
+${escapar(d.orientacoes) || 'Não informado'}
 </div>
 
-
 <h2>
-Retorno e condição na alta
+Retorno e condição
 </h2>
-
 
 <div class="linha">
 
 <b>Retorno:</b>
-${escapar(d.retorno)||'Se necessário'}
+${escapar(d.retorno) || 'Se necessário'}
 
 <br>
 
@@ -840,19 +771,15 @@ ${escapar(d.condicao)}
 
 </div>
 
-
 ${localInternacaoPDF}
-
 
 <h2>
 Observações
 </h2>
 
-
 <div class="linha">
-${escapar(d.observacoes)||'Nenhuma'}
+${escapar(d.observacoes) || 'Nenhuma'}
 </div>
-
 
 <div class="rodape">
 
@@ -873,14 +800,11 @@ Assinatura do médico
 
 </div>
 
-
 <br>
-
 
 <button onclick="window.print()">
 Imprimir / Salvar como PDF
 </button>
-
 
 </body>
 
@@ -888,22 +812,21 @@ Imprimir / Salvar como PDF
 
 `);
 
+      w.document.close();
 
-  w.document.close();
+      w.focus();
 
-  w.focus();
+      setTimeout(
+        () => {
+          w.print();
+        },
+        400
+      );
 
+    }
 
-  setTimeout(
-    () => {
-      w.print();
-    },
-    400
-  );
-
-}
-
-</script>
+  </script>
 
 </body>
+
 </html>
