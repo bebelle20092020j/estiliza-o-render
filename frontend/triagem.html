@@ -1,1778 +1,848 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Triagem Inteligente | Sentinela</title>
-
+<title>Triagem</title>
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/estilo-novo.css">
 
 <style>
-:root {
-  --navy: #123e63;
-  --blue: #2d6f9f;
-  --sky: #eaf4fb;
-  --ink: #1f3344;
-  --muted: #657b8b;
-  --line: #d9e5ed;
-  --green: #18794e;
-  --yellow: #946200;
-  --red: #b42318;
-  --purple: #6656a6;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  background: #f3f7fb;
-  color: var(--ink);
-}
-
-.container {
-  max-width: 1180px;
-  margin: 24px auto;
-  padding: 24px;
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 12px 40px #123e6314;
-}
-
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 22px;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-}
-
-.brand-icon {
-  width: 48px;
-  height: 48px;
-  display: grid;
-  place-items: center;
-  border-radius: 14px;
-  background: linear-gradient(145deg, var(--navy), var(--blue));
-  color: #fff;
-  font-size: 24px;
-}
-
-.eyebrow {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  color: var(--blue);
-  text-transform: uppercase;
-}
-
-.brand h1 {
-  font-size: 25px;
-  margin: 3px 0;
-  color: var(--navy);
-}
-
-.sub {
-  margin: 0;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.top-actions {
-  display: flex;
-  gap: 9px;
-  flex-wrap: wrap;
-}
-
-.btn {
-  border: 0;
-  border-radius: 9px;
-  padding: 11px 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: .15s;
-}
-
-.btn:hover {
-  filter: brightness(.96);
-  transform: translateY(-1px);
-}
-
-.btn-primary {
-  background: var(--navy);
-  color: #fff;
-}
-
-.btn-secondary {
-  background: #eaf1f6;
-  color: var(--navy);
-}
-
-.btn-tv {
-  background: #e3f7ed;
-  color: #176642;
-}
-
-.section-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0 0 14px;
-  color: var(--navy);
-  font-size: 17px;
-}
-
-.section-title .num {
-  width: 28px;
-  height: 28px;
-  display: grid;
-  place-items: center;
-  background: var(--sky);
-  border-radius: 8px;
-  font-size: 13px;
-}
-
-.queue-card,
-.form-card,
-.analysis-card {
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 18px;
-  margin: 16px 0;
-}
-
-.queue-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.queue-head h2 {
-  font-size: 16px;
-  margin: 0;
-  color: var(--navy);
-}
-
-.queue-status {
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.queue-list {
-  display: grid;
-  gap: 8px;
-  margin-top: 13px;
-}
-
-.queue-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px;
-  border: 1px solid #e4edf3;
-  border-radius: 10px;
-  background: #fbfdff;
-}
-
-.queue-row strong {
-  display: block;
-}
-
-.queue-row small {
-  color: var(--muted);
-}
-
-.empty {
-  padding: 18px;
-  text-align: center;
-  color: var(--muted);
-  background: #f8fbfd;
-  border-radius: 10px;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 13px;
-}
-
-.field {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.field.full {
-  grid-column: 1 / -1;
-}
-
-.field label {
-  font-size: 12px;
-  font-weight: 800;
-  color: #385268;
-}
-
-.field input,
-.field select,
-.field textarea {
-  width: 100%;
-  padding: 11px 12px;
-  border: 1px solid #cfdee8;
-  border-radius: 9px;
-  background: #fff;
-  color: var(--ink);
-  font: inherit;
-  font-size: 14px;
-  outline: none;
-}
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px #2d6f9f18;
-}
-
-.field textarea {
-  min-height: 88px;
-  resize: vertical;
-}
-
-.field small {
-  font-size: 11px;
-  color: var(--muted);
-}
-
-.divider {
-  border: 0;
-  border-top: 1px solid #edf1f5;
-  margin: 18px 0;
-}
-
-.vitals-note {
-  grid-column: 1 / -1;
-  color: var(--muted);
-  font-size: 12px;
-  margin: 0;
-}
-
-.analysis-card {
-  background: linear-gradient(140deg, #f7fbff, #fff);
-  border-color: #d4e4ef;
-  overflow: hidden;
-}
-
-.analysis-top {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.ai-icon {
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  background: linear-gradient(145deg, #123e63, #478fc1);
-  color: #fff;
-  display: grid;
-  place-items: center;
-  font-size: 23px;
-  flex-shrink: 0;
-}
-
-.analysis-top h2 {
-  margin: 0;
-  color: var(--navy);
-  font-size: 18px;
-}
-
-.analysis-top p {
-  margin: 4px 0 0;
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.live-pill {
-  margin-left: auto;
-  background: #e5f7ef;
-  color: #176642;
-  border-radius: 99px;
-  padding: 7px 10px;
-  font-size: 11px;
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-.risk-summary {
-  display: grid;
-  grid-template-columns: 170px minmax(0, 1fr);
-  gap: 15px;
-  margin-top: 16px;
-}
-
-.risk-level {
-  border-radius: 12px;
-  padding: 18px 12px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 145px;
-  background: #f0f3f6;
-  color: #4c6170;
-  border: 1px solid #dfe7ec;
-}
-
-.risk-level .emoji {
-  font-size: 25px;
-}
-
-.risk-level strong {
-  font-size: 17px;
-  margin: 6px 0;
-}
-
-.risk-level span {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-}
-
-.risk-level.verde {
-  background: #e8f7ef;
-  border-color: #b8e5ca;
-  color: #176642;
-}
-
-.risk-level.amarelo {
-  background: #fff5d9;
-  border-color: #f1d789;
-  color: #805600;
-}
-
-.risk-level.vermelho {
-  background: #fff0ef;
-  border-color: #f0b7b2;
-  color: #a21b15;
-}
-
-.risk-level.revisao {
-  background: #f1edff;
-  border-color: #d8cffb;
-  color: #554398;
-}
-
-.analysis-details {
-  padding: 4px 0;
-}
-
-.analysis-details h3 {
-  font-size: 14px;
-  margin: 0 0 8px;
-  color: var(--navy);
-}
-
-.analysis-details p {
-  margin: 5px 0;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.chips {
-  display: flex;
-  gap: 7px;
-  flex-wrap: wrap;
-  margin: 10px 0;
-}
-
-.chip {
-  padding: 5px 8px;
-  border-radius: 7px;
-  font-size: 11px;
-  font-weight: 700;
-  background: #eaf1f6;
-  color: #34546a;
-}
-
-.detail-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 14px;
-}
-
-.detail-box {
-  padding: 13px;
-  border-radius: 10px;
-  background: #fff;
-  border: 1px solid #e1eaf0;
-}
-
-.detail-box h4 {
-  margin: 0 0 7px;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  color: #526b7d;
-}
-
-.detail-box ul {
-  margin: 0;
-  padding-left: 18px;
-  font-size: 12px;
-  line-height: 1.6;
-}
-
-.detail-box.alert {
-  border-color: #e6a29d;
-  background: #fff8f7;
-}
-
-.safety-banner {
-  margin-top: 14px;
-  padding: 12px 14px;
-  background: #fff8e7;
-  border: 1px solid #f1d99a;
-  border-radius: 10px;
-  font-size: 12px;
-  line-height: 1.55;
-  color: #664b0b;
-}
-
-.form-actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 16px;
-}
-
-.form-actions .btn {
-  min-width: 160px;
-}
-
-.footnote {
-  font-size: 11px;
-  color: var(--muted);
-  line-height: 1.6;
-  margin: 14px 0 0;
-}
-
-.status-text {
-  font-size: 12px;
-  color: var(--muted);
-  margin-left: auto;
-}
-
-.required {
-  color: var(--red);
-}
-
-@media(max-width:780px) {
-  .container {
-    margin: 10px;
-    padding: 15px;
+  .btn-tv {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 8px;
   }
 
-  .form-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .btn-tv:hover {
+    background: #1e7e34;
   }
 
-  .risk-summary {
-    grid-template-columns: 1fr;
+  .pacientes-fila {
+    margin-bottom: 30px;
+    background: #f0f4ff;
+    border-radius: 8px;
+    padding: 16px;
+    border: 1px solid #d0d8f0;
   }
 
-  .risk-level {
-    min-height: 105px;
+  .pacientes-fila h3 {
+    margin-top: 0;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
   }
 
-  .detail-grid {
-    grid-template-columns: 1fr;
+  .pacientes-fila h3 span {
+    font-size: 13px;
+    font-weight: normal;
+    color: #666;
   }
 
-  .live-pill {
-    margin-left: 0;
-  }
-}
-
-@media(max-width:520px) {
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .field.full,
-  .vitals-note {
-    grid-column: auto;
+  .fila-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: white;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    border: 1px solid #dce4ff;
   }
 
-  .brand h1 {
+  .fila-item strong {
+    font-size: 15px;
+  }
+
+  .fila-item small {
+    color: #888;
+    font-size: 12px;
+  }
+
+  .btn-abrir-tv {
+    display: inline-block;
+    background: #17a2b8;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 5px;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-abrir-tv:hover {
+    background: #117a8b;
+  }
+
+  .assistente-risco {
+    margin: 18px 0;
+    padding: 18px;
+    border-radius: 12px;
+    border: 1px solid #d9e5ee;
+    background: linear-gradient(135deg, #f7fbff, #ffffff);
+    box-shadow: 0 8px 24px rgba(18, 62, 99, 0.08);
+  }
+
+  .assistente-cabecalho {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .assistente-icone {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #123e63;
+    color: white;
     font-size: 21px;
+    flex-shrink: 0;
   }
 
-  .queue-row {
-    align-items: flex-start;
-    flex-direction: column;
+  .assistente-cabecalho h3 {
+    margin: 0;
+    color: #123e63;
   }
 
-  .topbar {
-    align-items: flex-start;
+  .assistente-cabecalho p {
+    margin: 4px 0 0;
+    color: #607789;
+    font-size: 13px;
   }
-}
+
+  .risco-cartao {
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 12px;
+    border-left: 5px solid #9aa;
+    background: #f3f6f8;
+  }
+
+  .risco-cartao.vermelho {
+    border-color: #c62828;
+    background: #fff0f0;
+  }
+
+  .risco-cartao.amarelo {
+    border-color: #d99a00;
+    background: #fff8e5;
+  }
+
+  .risco-cartao.verde {
+    border-color: #26845b;
+    background: #edf9f1;
+  }
+
+  .risco-cartao.revisao {
+    border-color: #6b63a8;
+    background: #f4f1ff;
+  }
+
+  .risco-titulo {
+    font-weight: 800;
+    font-size: 17px;
+    margin-bottom: 6px;
+  }
+
+  .risco-cartao ul {
+    margin: 8px 0 0 20px;
+    padding: 0;
+  }
+
+  .risco-cartao li {
+    margin-bottom: 5px;
+    line-height: 1.5;
+  }
+
+  .risco-aviso {
+    color: #5b7182;
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 12px 0 0;
+  }
+
+  .btn-analisar {
+    background: #123e63;
+    color: white;
+    border: 0;
+    border-radius: 7px;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin: 10px 8px 8px 0;
+  }
+
+  .btn-analisar:hover {
+    background: #2d6f9f;
+  }
+
+  .campo-triagem {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 9px 0;
+    padding: 10px;
+    border: 1px solid #ccdbe5;
+    border-radius: 7px;
+  }
+
+  @media (max-width: 600px) {
+    .fila-item {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .pacientes-fila h3 {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
 </style>
+
+<link rel="stylesheet" href="css/estilo-novo.css">
 </head>
 
 <body>
 <div class="container">
 
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-icon">✚</div>
+  <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:20px;">
+    <h2 style="margin:0;">🏥 Triagem Hospitalar</h2>
+
+    <button
+      class="btn-abrir-tv"
+      onclick="window.open('tv.html','_blank')">
+      📺 Abrir Tela da TV
+    </button>
+  </div>
+
+  <div class="pacientes-fila">
+    <h3>
+      Pacientes Cadastrados no Atendimento
+      <span>Clique em "Chamar na TV" para chamar ao guichê</span>
+    </h3>
+
+    <div id="fila-pacientes">
+      <p style="color:#888; text-align:center;">Carregando...</p>
+    </div>
+
+    <button
+      onclick="carregarPacientes()"
+      style="margin-top:8px; background:#6c757d; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-size:13px;">
+      🔄 Atualizar lista
+    </button>
+  </div>
+
+  <hr>
+
+  <h3>Formulário de Triagem</h3>
+
+  <label for="nome">Nome do paciente</label>
+  <input
+    class="campo-triagem"
+    id="nome"
+    placeholder="Nome do paciente"
+    required>
+
+  <label for="sintoma">Sintoma principal</label>
+  <select class="campo-triagem" id="sintoma" required>
+    <option value="">Selecione o sintoma</option>
+    <option value="dor_leve">Dor leve</option>
+    <option value="resfriado">Resfriado</option>
+    <option value="coriza">Coriza</option>
+    <option value="tosse">Tosse</option>
+    <option value="febre">Febre</option>
+    <option value="vomito">Vômito</option>
+    <option value="diarreia">Diarreia</option>
+    <option value="falta_ar_moderada">Falta de ar moderada</option>
+    <option value="falta_ar_grave">Falta de ar grave</option>
+    <option value="infarto">Suspeita de infarto</option>
+    <option value="avc">Suspeita de AVC</option>
+    <option value="convulsao">Convulsão</option>
+    <option value="hemorragia">Hemorragia</option>
+  </select>
+
+  <label for="temp">Temperatura (°C)</label>
+  <input
+    class="campo-triagem"
+    id="temp"
+    type="number"
+    min="30"
+    max="45"
+    step="0.1"
+    placeholder="Ex.: 37,2">
+
+  <label for="alergia">Alergias conhecidas</label>
+  <input
+    class="campo-triagem"
+    id="alergia"
+    placeholder="Informe alergias ou escreva 'Não informado'">
+
+  <label for="observacao">Observações adicionais</label>
+  <textarea
+    class="campo-triagem"
+    id="observacao"
+    placeholder="Descreva outros sinais relatados, sem incluir dados desnecessários"></textarea>
+
+  <div class="assistente-risco">
+    <div class="assistente-cabecalho">
+      <div class="assistente-icone">✚</div>
+
       <div>
-        <div class="eyebrow">Sentinela • Gestão hospitalar</div>
-        <h1>Triagem inteligente</h1>
-        <p class="sub">Painel demonstrativo de apoio à avaliação inicial</p>
+        <h3>Assistente inteligente de apoio à triagem</h3>
+        <p>
+          Preencha os dados do paciente e clique no botão para solicitar
+          uma análise demonstrativa.
+        </p>
       </div>
     </div>
 
-    <div class="top-actions">
-      <button class="btn btn-secondary" type="button" id="newPatientBtn">
-        ＋ Novo paciente
-      </button>
+    <button
+      type="button"
+      class="btn-analisar"
+      onclick="analisarRisco()">
+      🔎 Analisar sinais e classificar risco
+    </button>
 
-      <button class="btn btn-tv" type="button"
-        onclick="window.open('tv.html','_blank')">
-        ▣ Abrir TV
-      </button>
-    </div>
-  </header>
-
-  <section class="queue-card">
-    <div class="queue-head">
-      <div>
-        <h2>Fila de atendimento</h2>
-        <div class="queue-status" id="queueStatus">
-          Sincronizando pacientes…
-        </div>
-      </div>
-
-      <button class="btn btn-secondary" type="button" id="refreshQueueBtn">
-        ↻ Atualizar fila
-      </button>
+    <!-- O resultado fica escondido até o usuário clicar no botão. -->
+    <div
+      id="resultado"
+      class="risco-cartao revisao"
+      hidden>
     </div>
 
-    <div id="fila-pacientes" class="queue-list">
-      <div class="empty">Carregando pacientes…</div>
-    </div>
-  </section>
+    <p class="risco-aviso">
+      <b>Importante:</b> este é um protótipo escolar baseado em regras,
+      não uma IA clínica validada. A classificação não é diagnóstico e
+      deve ser confirmada por um profissional de saúde. Em uma emergência
+      real, procure atendimento de emergência imediatamente.
+    </p>
+  </div>
 
-  <form id="triagemForm" novalidate>
-
-    <section class="form-card">
-      <h2 class="section-title">
-        <span class="num">01</span>
-        Identificação e queixa
-      </h2>
-
-      <div class="form-grid">
-
-        <div class="field">
-          <label for="nome">Nome do paciente <span class="required">*</span></label>
-          <input id="nome" autocomplete="off"
-            placeholder="Nome completo" required>
-        </div>
-
-        <div class="field">
-          <label for="idade">Idade (anos)</label>
-          <input id="idade" type="number" min="0" max="120"
-            placeholder="Ex.: 42">
-          <small>Para menores de 1 ano, informe 0 e detalhe a idade nas observações.</small>
-        </div>
-
-        <div class="field">
-          <label for="duracao">Quando começou?</label>
-          <select id="duracao">
-            <option value="">Selecione</option>
-            <option>Há poucos minutos</option>
-            <option>Há algumas horas</option>
-            <option>Hoje</option>
-            <option>Há alguns dias</option>
-            <option>Há uma semana ou mais</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="sintoma">Sintoma principal <span class="required">*</span></label>
-          <select id="sintoma" required>
-            <option value="">Selecione o sintoma</option>
-            <option value="dor_leve">Dor leve</option>
-            <option value="dor_forte">Dor forte ou intensa</option>
-            <option value="resfriado">Resfriado / coriza</option>
-            <option value="tosse">Tosse</option>
-            <option value="febre">Febre</option>
-            <option value="vomito">Vômito</option>
-            <option value="diarreia">Diarreia</option>
-            <option value="falta_ar_moderada">Falta de ar</option>
-            <option value="falta_ar_grave">Dificuldade intensa para respirar</option>
-            <option value="dor_peito">Dor no peito</option>
-            <option value="avc">Sinais súbitos de AVC</option>
-            <option value="convulsao">Convulsão</option>
-            <option value="hemorragia">Sangramento intenso</option>
-            <option value="alergia_grave">Reação alérgica grave</option>
-            <option value="desmaio">Desmaio / alteração de consciência</option>
-            <option value="outro">Outro / não definido</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="dor">Intensidade da dor (0–10)</label>
-          <input id="dor" type="number" min="0" max="10"
-            placeholder="0 = nenhuma; 10 = máxima">
-        </div>
-
-        <div class="field">
-          <label for="alergia">Alergias conhecidas</label>
-          <input id="alergia" placeholder="Alergia conhecida ou não informada">
-        </div>
-
-        <div class="field full">
-          <label for="observacao">Descrição dos sintomas e sinais observados</label>
-          <textarea id="observacao"
-            placeholder="Ex.: início súbito, piora, tontura, dor irradiada, dificuldade para falar… Evite dados que não sejam necessários."></textarea>
-        </div>
-
-      </div>
-
-      <hr class="divider">
-
-      <h2 class="section-title">
-        <span class="num">02</span>
-        Sinais vitais e estado atual
-      </h2>
-
-      <div class="form-grid">
-
-        <div class="field">
-          <label for="temp">Temperatura (°C)</label>
-          <input id="temp" type="number" min="25" max="45"
-            step="0.1" placeholder="Ex.: 37.2">
-        </div>
-
-        <div class="field">
-          <label for="fc">Frequência cardíaca (bpm)</label>
-          <input id="fc" type="number" min="1" max="300"
-            placeholder="Ex.: 82">
-        </div>
-
-        <div class="field">
-          <label for="fr">Frequência respiratória (irpm)</label>
-          <input id="fr" type="number" min="1" max="100"
-            placeholder="Ex.: 18">
-        </div>
-
-        <div class="field">
-          <label for="spo2">Saturação de oxigênio (%)</label>
-          <input id="spo2" type="number" min="50" max="100"
-            placeholder="Ex.: 98">
-        </div>
-
-        <div class="field">
-          <label for="pas">Pressão sistólica (mmHg)</label>
-          <input id="pas" type="number" min="30" max="300"
-            placeholder="Ex.: 120">
-        </div>
-
-        <div class="field">
-          <label for="consciencia">Estado de consciência</label>
-          <select id="consciencia">
-            <option value="normal">Acordado e respondendo normalmente</option>
-            <option value="confuso">Confusão / desorientação</option>
-            <option value="sonolento">Muito sonolento / difícil de despertar</option>
-            <option value="inconsciente">Inconsciente / não responde</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="respiracao">Respiração observada</label>
-          <select id="respiracao">
-            <option value="normal">Sem dificuldade aparente</option>
-            <option value="moderada">Dificuldade para respirar</option>
-            <option value="grave">Dificuldade intensa / não consegue falar normalmente</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="sangramento">Sangramento</label>
-          <select id="sangramento">
-            <option value="nenhum">Nenhum observado</option>
-            <option value="leve">Leve</option>
-            <option value="intenso">Intenso / não controlado</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="evolucao">Evolução percebida</label>
-          <select id="evolucao">
-            <option value="estavel">Estável</option>
-            <option value="piorando">Está piorando</option>
-            <option value="subito">Início súbito de sinais importantes</option>
-          </select>
-        </div>
-
-      </div>
-
-      <p class="vitals-note">
-        Informe apenas medidas realmente aferidas. Campo vazio significa
-        “não informado”; não será tratado como valor normal.
-      </p>
-    </section>
-
-    <section class="analysis-card" aria-live="polite">
-
-      <div class="analysis-top">
-        <div class="ai-icon">⌁</div>
-
-        <div>
-          <h2>Assistente de análise de risco</h2>
-          <p>Recalcula automaticamente quando os campos são alterados.</p>
-        </div>
-
-        <span class="live-pill" id="liveStatus">● AO VIVO</span>
-      </div>
-
-      <div class="risk-summary">
-
-        <div id="riskLevel" class="risk-level revisao">
-          <div class="emoji">◉</div>
-          <strong>REVISÃO</strong>
-          <span>Aguardando dados</span>
-        </div>
-
-        <div class="analysis-details">
-          <h3 id="riskHeadline">Preencha os dados para iniciar a análise</h3>
-
-          <p id="riskExplanation">
-            A classificação é preliminar e serve apenas para demonstrar
-            o funcionamento do projeto escolar.
-          </p>
-
-          <div class="chips" id="riskChips">
-            <span class="chip">Monitoramento em tempo real</span>
-            <span class="chip">Análise explicável</span>
-          </div>
-
-          <p id="riskTimestamp" class="queue-status">
-            Aguardando atualização…
-          </p>
-        </div>
-
-      </div>
-
-      <div class="detail-grid">
-
-        <div class="detail-box">
-          <h4>🔍 Fatores detectados</h4>
-          <ul id="riskFactors">
-            <li>Preencha pelo menos o sintoma principal.</li>
-          </ul>
-        </div>
-
-        <div class="detail-box">
-          <h4>🧭 Próximas ações sugeridas</h4>
-          <ul id="riskActions">
-            <li>Confirme os dados e peça avaliação de profissional de saúde.</li>
-          </ul>
-        </div>
-
-        <div class="detail-box">
-          <h4>🧬 Possíveis causas — não são diagnóstico</h4>
-          <ul id="riskCauses">
-            <li>As hipóteses aparecem após preencher os dados.</li>
-          </ul>
-        </div>
-
-        <div class="detail-box" id="immediateCareBox">
-          <h4>🚨 Cuidados imediatos</h4>
-          <ul id="immediateCare">
-            <li>Aguardando análise dos dados.</li>
-          </ul>
-        </div>
-
-      </div>
-
-      <div class="safety-banner">
-        <strong>Limite de segurança:</strong>
-        este painel usa regras demonstrativas, não uma IA médica validada.
-        As possíveis causas são hipóteses gerais, não diagnósticos.
-        Não use a cor verde para descartar risco.
-        Sinais graves exigem avaliação humana imediata,
-        independentemente do resultado exibido.
-      </div>
-
-    </section>
-
-    <div class="form-actions">
-      <button class="btn btn-primary" type="submit">
-        ✓ Salvar triagem
-      </button>
-
-      <button class="btn btn-secondary" type="button" id="clearBtn">
-        Limpar formulário
-      </button>
-
-      <span id="saveStatus" class="status-text"></span>
-    </div>
-
-  </form>
-
-  <p class="footnote">
-    Protótipo acadêmico do Sentinela. Os limites numéricos e palavras-chave
-    são exemplos de programação, não um protocolo clínico validado.
-    Em situação real, siga o protocolo institucional e a orientação da equipe de saúde.
-  </p>
+  <button type="button" onclick="salvar()">
+    Salvar Triagem
+  </button>
 
 </div>
 
 <script>
-const $ = id => document.getElementById(id);
-const form = $('triagemForm');
+function carregarPacientes() {
+  fetch("/pacientes")
+    .then(r => {
+      if (!r.ok) {
+        throw new Error("Falha ao carregar");
+      }
 
-const analysisFields = [
-  'idade', 'duracao', 'sintoma', 'dor', 'observacao',
-  'temp', 'fc', 'fr', 'spo2', 'pas',
-  'consciencia', 'respiracao', 'sangramento',
-  'evolucao', 'alergia'
-];
+      return r.json();
+    })
+    .then(pacientes => {
+      const div = document.getElementById("fila-pacientes");
+      const fila = pacientes.filter(p => p.status === "triagem");
 
-let analysisTimer;
+      if (fila.length === 0) {
+        div.innerHTML =
+          "<p style='color:#888; text-align:center;'>Nenhum paciente aguardando.</p>";
+        return;
+      }
 
-function value(id) {
-  return $(id).value.trim();
+      div.innerHTML = "";
+
+      fila.forEach(p => {
+        const item = document.createElement("div");
+        item.className = "fila-item";
+
+        const info = document.createElement("div");
+
+        const nome = document.createElement("strong");
+        nome.textContent = p.nome || "Paciente";
+
+        const br = document.createElement("br");
+
+        const small = document.createElement("small");
+        small.textContent =
+          `CPF: ${p.cpf || "—"} | Tipo: ${p.tipo || "—"}`;
+
+        info.append(nome, br, small);
+
+        const button = document.createElement("button");
+        button.className = "btn-tv";
+        button.textContent = "📺 Chamar na TV";
+
+        button.addEventListener("click", () => {
+          chamarNaTV(p.nome || "Paciente");
+        });
+
+        item.append(info, button);
+        div.appendChild(item);
+      });
+    })
+    .catch(() => {
+      document.getElementById("fila-pacientes").textContent =
+        "Erro ao carregar pacientes.";
+    });
 }
 
-function num(id) {
-  const raw = value(id);
+function chamarNaTV(nome) {
+  fetch("/tv/chamar", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      localTipo: "GUICHÊ",
+      localNumero: "01",
+      paciente: nome
+    })
+  })
+  .then(r => {
+    if (!r.ok) {
+      throw new Error("Falha ao chamar");
+    }
 
-  if (raw === '') return null;
-
-  const n = Number(raw);
-
-  return Number.isFinite(n) ? n : null;
+    return r.json();
+  })
+  .then(() => {
+    alert(
+      "✅ " + nome +
+      " foi chamado na TV para o Guichê 01!"
+    );
+  })
+  .catch(() => {
+    alert("Não foi possível chamar o paciente na TV.");
+  });
 }
 
-function normalize(text) {
-  return String(text || '')
-    .toLocaleLowerCase('pt-BR')
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
-}
+/*
+ * Motor de regras explicável para demonstração escolar.
+ * Não é um modelo de IA treinado nem substitui avaliação profissional.
+ */
+function classificarRisco(sintoma, temperatura, observacao) {
+  const texto =
+    `${sintoma || ""} ${observacao || ""}`.toLocaleLowerCase("pt-BR");
 
-function hasAny(text, terms) {
-  return terms.some(term => text.includes(normalize(term)));
-}
-
-function addReason(list, text) {
-  if (!list.includes(text)) list.push(text);
-}
-
-
-/* ======================================
-   ANÁLISE DEMONSTRATIVA DE RISCO
-====================================== */
-
-function analyze() {
-
-  const symptom = value('sintoma');
-  const obs = normalize(value('observacao'));
-  const combined = normalize(symptom + ' ' + obs);
-
-  const temp = num('temp');
-  const hr = num('fc');
-  const rr = num('fr');
-  const spo2 = num('spo2');
-  const pas = num('pas');
-  const pain = num('dor');
-  const age = num('idade');
-
-  const consciousness = value('consciencia');
-  const breathing = value('respiracao');
-  const bleeding = value('sangramento');
-  const evolution = value('evolucao');
-
-  const red = [];
-  const yellow = [];
-  const notes = [];
-  const actions = [];
-
-  const emergencyWords = [
-    'dor no peito',
-    'pressao no peito',
-    'falta de ar intensa',
-    'nao consegue respirar',
-    'dificuldade intensa para respirar',
-    'rosto torto',
-    'fala enrolada',
-    'dificuldade para falar',
-    'fraqueza de um lado',
-    'convulsao',
-    'inconsciente',
-    'desmaiou',
-    'sangramento intenso',
-    'reacao alergica grave',
-    'lingua inchada',
-    'garganta fechando'
+  const sinaisEmergencia = [
+    "dor no peito",
+    "dor toracica",
+    "dificuldade para respirar",
+    "não consegue respirar",
+    "nao consegue respirar",
+    "desmaio",
+    "confusão mental",
+    "confusao mental",
+    "sangramento intenso",
+    "fraqueza de um lado",
+    "rosto torto",
+    "lábios roxos",
+    "labios roxos"
   ];
 
-  if ([
-    'falta_ar_grave',
-    'dor_peito',
-    'avc',
-    'convulsao',
-    'hemorragia',
-    'alergia_grave',
-    'desmaio'
-  ].includes(symptom)) {
-    addReason(
-      red,
-      'Sintoma selecionado associado a possível emergência no conjunto de regras demonstrativas.'
+  const sinaisAlerta = [
+    "piora",
+    "dor forte",
+    "dor intensa",
+    "sangue nas fezes",
+    "vômitos persistentes",
+    "vomitos persistentes",
+    "desidratação",
+    "desidratacao",
+    "sonolência intensa",
+    "sonolencia intensa"
+  ];
+
+  const vermelhos = [
+    "infarto",
+    "avc",
+    "convulsao",
+    "hemorragia",
+    "falta_ar_grave"
+  ];
+
+  const amarelos = [
+    "febre",
+    "vomito",
+    "diarreia",
+    "falta_ar_moderada"
+  ];
+
+  const motivos = [];
+  let risco = "revisao";
+
+  if (vermelhos.includes(sintoma)) {
+    motivos.push(
+      "O sintoma selecionado está configurado como sinal de alerta máximo neste protótipo."
     );
   }
 
-  if (hasAny(combined, emergencyWords)) {
-    addReason(
-      red,
-      'Descrição contém palavra-chave associada a sinal de alerta importante.'
+  if (sinaisEmergencia.some(p => texto.includes(p))) {
+    motivos.push(
+      "A observação contém um sinal ou termo que pode indicar emergência."
     );
   }
 
-  if (consciousness === 'inconsciente') {
-    addReason(red, 'Pessoa não responde normalmente ou está inconsciente.');
-  }
-
-  if (consciousness === 'sonolento') {
-    addReason(yellow, 'Sonolência importante ou dificuldade para despertar informada.');
-  }
-
-  if (consciousness === 'confuso') {
-    addReason(yellow, 'Confusão ou desorientação informada.');
-  }
-
-  if (breathing === 'grave') {
-    addReason(red, 'Dificuldade respiratória intensa selecionada.');
-  }
-
-  if (breathing === 'moderada') {
-    addReason(yellow, 'Dificuldade para respirar informada.');
-  }
-
-  if (bleeding === 'intenso') {
-    addReason(red, 'Sangramento intenso ou não controlado selecionado.');
-  }
-
-  if (bleeding === 'leve') {
-    addReason(yellow, 'Sangramento informado; precisa ser avaliado no contexto.');
-  }
-
-  if (evolution === 'subito') {
-    addReason(red, 'Início súbito de sinais importantes informado.');
-  }
-
-  if (evolution === 'piorando') {
-    addReason(yellow, 'Sintomas informados como em piora.');
-  }
-
-  if (spo2 !== null && spo2 < 90) {
-    addReason(
-      red,
-      'Saturação informada abaixo de 90%; acione avaliação imediata sem atrasar para repetir a medida.'
-    );
-  } else if (spo2 !== null && spo2 < 94) {
-    addReason(
-      yellow,
-      'Saturação informada abaixo de 94%; requer conferência profissional.'
+  if (Number.isFinite(temperatura) && temperatura >= 39) {
+    motivos.push(
+      "Temperatura informada igual ou superior a 39 °C."
     );
   }
 
-  if (pas !== null && pas < 90) {
-    addReason(
-      red,
-      'Pressão sistólica informada abaixo de 90 mmHg; confirme e acione a equipe.'
-    );
-  }
-
-  if (rr !== null && rr >= 30) {
-    addReason(
-      red,
-      'Frequência respiratória informada muito elevada (30/min ou mais).'
-    );
-  } else if (rr !== null && rr >= 22) {
-    addReason(
-      yellow,
-      'Frequência respiratória informada elevada (22/min ou mais).'
-    );
-  }
-
-  if (hr !== null && (hr > 130 || hr < 40)) {
-    addReason(
-      red,
-      'Frequência cardíaca em faixa de alerta configurada no protótipo.'
-    );
-  } else if (hr !== null && (hr > 110 || hr < 50)) {
-    addReason(
-      yellow,
-      'Frequência cardíaca fora da faixa de referência usada no protótipo.'
-    );
-  }
-
-  if (temp !== null && temp >= 40) {
-    addReason(red, 'Temperatura informada igual ou superior a 40 °C.');
-  } else if (temp !== null && temp >= 38) {
-    addReason(yellow, 'Temperatura informada igual ou superior a 38 °C.');
-  }
-
-  if (pain !== null && pain >= 8) {
-    addReason(yellow, 'Intensidade de dor informada como 8/10 ou maior.');
-  } else if (pain !== null && pain >= 5) {
-    addReason(yellow, 'Dor moderada ou intensa informada.');
-  }
-
-  if ([
-    'dor_forte',
-    'falta_ar_moderada',
-    'febre',
-    'vomito',
-    'diarreia'
-  ].includes(symptom)) {
-    addReason(
-      yellow,
-      'Sintoma selecionado exige avaliação e interpretação do contexto.'
-    );
-  }
-
-  if (hasAny(combined, [
-    'sangue nas fezes',
-    'vomitos persistentes',
-    'vomito persistente',
-    'desidratacao',
-    'dor intensa',
-    'dor forte',
-    'piora rapida',
-    'muito fraco'
-  ])) {
-    addReason(
-      yellow,
-      'Descrição inclui sinal adicional que merece atenção profissional.'
-    );
-  }
-
-  if (age !== null && age < 1 && temp !== null && temp >= 38) {
-    addReason(
-      yellow,
-      'Bebê com menos de 1 ano e temperatura elevada: avaliação profissional rápida é importante.'
-    );
-  }
-
-  const hasVitals = [temp, hr, rr, spo2, pas].some(v => v !== null);
-
-  if (!hasVitals) {
-    notes.push(
-      'Nenhum sinal vital numérico foi informado; a análise tem informação limitada.'
-    );
-  }
-
-  if (!value('idade')) notes.push('Idade não informada.');
-  if (!value('duracao')) notes.push('Duração dos sintomas não informada.');
-  if (!value('alergia')) notes.push('Alergias não informadas.');
-
-  let level = 'revisao';
-  let title = 'AVALIAÇÃO HUMANA NECESSÁRIA';
-  let headline = 'Dados insuficientes para sugerir uma prioridade com segurança.';
-  let explanation =
-    'A ausência de alertas configurados não significa ausência de risco. Complete os dados e solicite avaliação humana.';
-
-  if (red.length) {
-
-    level = 'vermelho';
-    title = 'VERMELHO';
-    headline = 'ALERTA MÁXIMO — avaliação humana imediata';
-    explanation =
-      'Foi detectado pelo menos um sinal configurado como alerta máximo. Não espere por novas medições ou pela aplicação para acionar a equipe.';
-
-  } else if (yellow.length) {
-
-    level = 'amarelo';
-    title = 'AMARELO';
-    headline = 'ATENÇÃO — avaliação profissional prioritária';
-    explanation =
-      'Há um ou mais fatores que precisam de avaliação profissional. A cor não define diagnóstico nem substitui protocolo clínico.';
-
-  } else if (
-    ['dor_leve', 'resfriado', 'tosse'].includes(symptom) &&
-    hasVitals &&
-    consciousness === 'normal' &&
-    breathing === 'normal' &&
-    bleeding === 'nenhum' &&
-    evolution === 'estavel'
-  ) {
-
-    level = 'verde';
-    title = 'VERDE';
-    headline = 'Nenhum alerta configurado foi detectado';
-    explanation =
-      'Os dados informados não acionaram as regras de alerta deste protótipo. Isso não confirma que a pessoa esteja segura nem exclui doença grave.';
-
-    addReason(
-      notes,
-      'A cor verde só significa que as regras demonstrativas não encontraram alerta entre os dados preenchidos.'
-    );
-
-  } else if (symptom) {
-
-    level = 'revisao';
-    title = 'REVISÃO';
-    headline = 'Necessária revisão por profissional';
-    explanation =
-      'Os dados não sustentam uma classificação automática confiável. Não presuma risco baixo; solicite avaliação humana.';
-
-  }
-
-  if (level === 'vermelho') {
-    actions.push(
-      'Acione imediatamente a equipe de emergência; no Brasil, ligue para o SAMU (192) em uma emergência real.'
-    );
-  }
-
-  if (level === 'amarelo') {
-    actions.push(
-      'Encaminhe para avaliação profissional prontamente e acompanhe mudanças nos sinais.'
-    );
-  }
-
-  if (level === 'verde') {
-    actions.push(
-      'Solicite conferência profissional dos dados e reavalie se houver piora ou novos sintomas.'
-    );
-  }
-
-  if (level === 'revisao') {
-    actions.push(
-      'Complete os campos ausentes e solicite avaliação profissional; não use a ausência de alerta como garantia.'
-    );
-  }
-
-  actions.push(
-    'Não administre medicamentos nem defina tratamento com base nesta tela.'
-  );
-
-  actions.push(
-    'Se houver piora, sinal grave ou dúvida, priorize ajuda humana imediata, independentemente da cor.'
-  );
-
-  if (value('alergia')) {
-    notes.push(
-      'Alergia informada: confirme essa informação com a equipe antes de qualquer cuidado ou procedimento.'
-    );
-  }
-
-  /* POSSÍVEIS CAUSAS — NÃO SÃO DIAGNÓSTICOS */
-
-  const causes = [];
-
-  if (
-    symptom === 'dor_peito' ||
-    hasAny(combined, ['dor no peito', 'pressao no peito', 'dor toracica'])
-  ) {
-    causes.push(
-      'Dor torácica pode estar associada a causas cardíacas, pulmonares, musculares ou digestivas; precisa de avaliação profissional.'
-    );
-  }
-
-  if (
-    symptom === 'avc' ||
-    hasAny(combined, [
-      'rosto torto',
-      'fala enrolada',
-      'dificuldade para falar',
-      'fraqueza de um lado'
-    ])
-  ) {
-    causes.push(
-      'Sinais neurológicos súbitos podem indicar AVC ou outra condição neurológica aguda. Não espere para buscar atendimento.'
-    );
-  }
-
-  if (
-    ['falta_ar_grave', 'falta_ar_moderada'].includes(symptom) ||
-    ['grave', 'moderada'].includes(breathing) ||
-    hasAny(combined, [
-      'falta de ar',
-      'dificuldade para respirar',
-      'nao consegue respirar'
-    ])
-  ) {
-    causes.push(
-      'Dificuldade respiratória pode estar relacionada a condições pulmonares, cardíacas, alérgicas ou outras causas.'
-    );
-  }
-
-  if (
-    symptom === 'convulsao' ||
-    ['inconsciente', 'confuso', 'sonolento'].includes(consciousness)
-  ) {
-    causes.push(
-      'Alteração da consciência pode ter causas neurológicas, metabólicas, infecciosas ou outras e exige avaliação conforme a gravidade.'
-    );
-  }
-
-  if (
-    symptom === 'hemorragia' ||
-    ['intenso', 'leve'].includes(bleeding) ||
-    hasAny(combined, ['sangramento', 'sangue nas fezes'])
-  ) {
-    causes.push(
-      'Sangramento pode decorrer de lesão ou de outras condições; a origem e a gravidade precisam ser avaliadas.'
-    );
-  }
-
-  if (
-    symptom === 'alergia_grave' ||
-    hasAny(combined, ['lingua inchada', 'garganta fechando', 'reacao alergica'])
-  ) {
-    causes.push(
-      'Inchaço ou sintomas respiratórios após possível contato com alérgeno podem indicar reação alérgica grave.'
-    );
-  }
-
-  if (symptom === 'febre' || (temp !== null && temp >= 38)) {
-    causes.push(
-      'Temperatura elevada pode ocorrer em infecções e em outras condições; o valor isolado não determina a causa.'
-    );
-  }
-
-  if (
-    ['vomito', 'diarreia'].includes(symptom) ||
-    hasAny(combined, ['vomito', 'diarreia', 'desidratacao'])
-  ) {
-    causes.push(
-      'Vômitos ou diarreia podem estar relacionados a problemas gastrointestinais e podem levar à desidratação.'
-    );
-  }
-
-  if (
-    symptom === 'desmaio' ||
-    hasAny(combined, ['desmaio', 'perda de consciencia'])
-  ) {
-    causes.push(
-      'Desmaio pode estar associado a alterações circulatórias, cardíacas, neurológicas ou metabólicas.'
-    );
-  }
-
-  if (!causes.length) {
-    causes.push(
-      'Os dados informados não permitem sugerir uma causa específica com segurança. Um profissional deve avaliar o contexto.'
-    );
-  }
-
-  causes.splice(4);
-
-  /* CUIDADOS IMEDIATOS */
-
-  const immediateCare = [];
-
-  if (level === 'vermelho') {
-
-    immediateCare.push(
-      'Acione imediatamente a equipe de emergência; em uma emergência real no Brasil, ligue para o SAMU (192).'
-    );
-
-    immediateCare.push(
-      'Mantenha a pessoa acompanhada, evite esforços e siga as instruções do atendente e da equipe de emergência.'
-    );
-
-    immediateCare.push(
-      'Não ofereça alimentos, bebidas ou medicamentos por conta própria e não atrase o atendimento para preencher a tela.'
-    );
-
-    immediateCare.push(
-      'Se a pessoa estiver inconsciente, verifique se responde e se respira normalmente. Se não respirar normalmente, informe o atendente e siga suas instruções de reanimação.'
-    );
-
-    if (bleeding === 'intenso' || symptom === 'hemorragia') {
-      immediateCare.push(
-        'Se houver sangramento externo intenso, pressione firmemente o local com pano limpo ou curativo enquanto aguarda ajuda, se for seguro fazê-lo.'
-      );
-    }
-
-    if (symptom === 'convulsao') {
-      immediateCare.push(
-        'Afaste objetos perigosos, proteja a cabeça se possível e não contenha os movimentos nem coloque nada na boca. Após a crise, verifique a respiração e siga as orientações de emergência.'
-      );
-    }
-
-    if (['avc', 'dor_peito', 'falta_ar_grave', 'alergia_grave'].includes(symptom)) {
-      immediateCare.push(
-        'Não deixe a pessoa dirigir. Informe à equipe quando os sintomas começaram e o que foi observado.'
-      );
-    }
-
-  } else if (level === 'amarelo') {
-
-    immediateCare.push(
-      'Solicite avaliação de um profissional de saúde prontamente e acompanhe a evolução dos sintomas.'
-    );
-
-    immediateCare.push(
-      'Confira novamente os sinais vitais se houver equipamento adequado e pessoa capacitada, sem atrasar o atendimento.'
-    );
-
-    immediateCare.push(
-      'Se houver piora rápida, dor no peito, dificuldade intensa para respirar, alteração de consciência ou sangramento importante, acione a emergência.'
-    );
-
-    immediateCare.push(
-      'Não inicie medicamentos ou tratamentos com base apenas nesta classificação automática.'
-    );
-
-  } else if (level === 'verde') {
-
-    immediateCare.push(
-      'Confirme os dados com o profissional responsável; a cor verde não exclui doença grave.'
-    );
-
-    immediateCare.push(
-      'Observe a evolução e solicite nova avaliação se surgirem sintomas novos ou piora.'
-    );
-
+  if (motivos.length > 0) {
+    risco = "vermelho";
   } else {
+    if (Number.isFinite(temperatura) && temperatura >= 38) {
+      motivos.push(
+        "Temperatura informada igual ou superior a 38 °C."
+      );
+    }
 
-    immediateCare.push(
-      'Solicite avaliação humana: os dados são insuficientes para uma classificação automática confiável.'
-    );
+    if (amarelos.includes(sintoma)) {
+      motivos.push(
+        "O sintoma selecionado pede atenção e avaliação profissional."
+      );
+    }
 
-    immediateCare.push(
-      'Complete apenas as informações que puderem ser verificadas com segurança, sem atrasar atendimento.'
-    );
+    if (sinaisAlerta.some(p => texto.includes(p))) {
+      motivos.push(
+        "A observação contém um sinal que merece avaliação profissional."
+      );
+    }
 
-    immediateCare.push(
-      'Se houver sinal grave ou piora rápida, procure ajuda de emergência independentemente da cor exibida.'
-    );
+    if (motivos.length > 0) {
+      risco = "amarelo";
+    } else if (
+      ["dor_leve", "resfriado", "coriza", "tosse"].includes(sintoma)
+    ) {
+      risco = "verde";
 
+      motivos.push(
+        "As informações preenchidas não acionaram as regras de alerta deste protótipo."
+      );
+    } else {
+      motivos.push(
+        "As informações são insuficientes para sugerir uma prioridade com segurança."
+      );
+    }
+  }
+
+  const orientacoes = {
+    vermelho:
+      "RISCO ALTO — avaliação imediata. Acione a equipe responsável agora. Não espere o sistema para pedir ajuda.",
+
+    amarelo:
+      "RISCO MODERADO — priorizar avaliação. Encaminhe para avaliação da equipe de saúde e acompanhe a evolução.",
+
+    verde:
+      "RISCO BAIXO NAS REGRAS DO PROTÓTIPO — confirme as informações e mantenha observação; a classificação não substitui avaliação profissional.",
+
+    revisao:
+      "NECESSÁRIA AVALIAÇÃO HUMANA. Revise os dados e solicite avaliação profissional; não presuma que o risco seja baixo."
+  };
+
+  const causas = {
+    dor_leve: [
+      "Esforço muscular",
+      "Dor localizada por causa variada"
+    ],
+
+    resfriado: [
+      "Infecção viral respiratória comum",
+      "Irritação das vias respiratórias"
+    ],
+
+    coriza: [
+      "Resfriado",
+      "Alergia ou irritação nasal"
+    ],
+
+    tosse: [
+      "Infecção respiratória",
+      "Alergia ou irritação das vias respiratórias"
+    ],
+
+    febre: [
+      "Infecção ou processo inflamatório",
+      "Outras causas que exigem avaliação conforme os demais sintomas"
+    ],
+
+    vomito: [
+      "Problema gastrointestinal",
+      "Infecção ou reação a alimento/medicamento"
+    ],
+
+    diarreia: [
+      "Infecção gastrointestinal",
+      "Intolerância ou reação alimentar"
+    ],
+
+    falta_ar_moderada: [
+      "Condição respiratória ou infecciosa",
+      "Outras causas que precisam de avaliação"
+    ],
+
+    falta_ar_grave: [
+      "Possível emergência respiratória ou cardíaca"
+    ],
+
+    infarto: [
+      "Possível problema cardíaco — emergência a descartar"
+    ],
+
+    avc: [
+      "Possível evento neurológico — emergência a descartar"
+    ],
+
+    convulsao: [
+      "Possível crise convulsiva; a causa precisa ser investigada"
+    ],
+
+    hemorragia: [
+      "Sangramento com causa a investigar; avaliar gravidade imediatamente"
+    ]
+  };
+
+  let cuidados = [
+    "Confirme os sintomas relatados e as informações registradas.",
+    "Mantenha o paciente acompanhado e encaminhe para avaliação profissional."
+  ];
+
+  if (risco === "vermelho") {
+    cuidados = [
+      "Acione imediatamente a equipe de saúde; em emergência no Brasil, ligue SAMU 192.",
+      "Não deixe a pessoa sozinha e evite que faça esforço.",
+      "Não ofereça comida, bebida ou medicamentos por conta própria.",
+      "Se houver sangramento externo, faça pressão direta com pano limpo enquanto chega ajuda; siga as orientações do serviço de emergência."
+    ];
+
+    if (sintoma === "convulsao") {
+      cuidados.push(
+        "Afaste objetos próximos, proteja a cabeça e não segure a pessoa nem coloque objetos na boca."
+      );
+    }
+
+    if (
+      sintoma === "falta_ar_grave" ||
+      texto.includes("dificuldade para respirar")
+    ) {
+      cuidados.push(
+        "Ajude a pessoa a ficar na posição em que respira melhor e siga as orientações da equipe de emergência."
+      );
+    }
+  } else if (risco === "amarelo") {
+    cuidados = [
+      "Encaminhe para avaliação profissional em tempo oportuno.",
+      "Observe piora dos sintomas e informe a equipe se houver mudança.",
+      "Não indique medicamentos sem orientação de profissional habilitado."
+    ];
+  } else if (risco === "verde") {
+    cuidados = [
+      "Mantenha observação e siga as orientações da equipe de saúde.",
+      "Procure avaliação se os sintomas persistirem ou piorarem.",
+      "Se surgir dificuldade para respirar, dor no peito, confusão ou piora intensa, procure emergência."
+    ];
   }
 
   return {
-    level,
-    title,
-    headline,
-    explanation,
-    reasons: [...red, ...yellow, ...notes],
-    actions,
-    causes,
-    immediateCare,
-    redCount: red.length,
-    yellowCount: yellow.length,
-    complete: [value('nome'), symptom].filter(Boolean).length === 2
+    risco,
+    titulo: orientacoes[risco],
+    motivos,
+    causas: causas[sintoma] || [
+      "Não é possível sugerir uma causa específica apenas com os dados informados."
+    ],
+    cuidados,
+    orientacao: orientacoes[risco]
   };
 }
 
+function analisarRisco() {
+  const sintoma = document.getElementById("sintoma").value;
 
-/* ======================================
-   ATUALIZAR O PAINEL
-====================================== */
+  const tempTexto =
+    document.getElementById("temp").value.trim();
 
-function fillList(id, items) {
-  const ul = $(id);
-  ul.replaceChildren();
+  const temperatura =
+    tempTexto === "" ? NaN : Number(tempTexto);
 
-  items.forEach(text => {
-    const li = document.createElement('li');
-    li.textContent = text;
-    ul.appendChild(li);
-  });
-}
+  const observacao =
+    document.getElementById("observacao").value;
 
-function renderAnalysis() {
+  const resultado =
+    document.getElementById("resultado");
 
-  const result = analyze();
-  const level = $('riskLevel');
+  // O resultado só aparece quando o botão de análise é clicado.
+  resultado.hidden = false;
 
-  level.className = 'risk-level ' + result.level;
-  level.replaceChildren();
+  if (!sintoma) {
+    resultado.className = "risco-cartao revisao";
+    resultado.replaceChildren();
 
-  const emoji = {
-    vermelho: '🚨',
-    amarelo: '⚠️',
-    verde: '✓',
-    revisao: '◉'
-  }[result.level];
+    const title = document.createElement("div");
+    title.className = "risco-titulo";
+    title.textContent = "Selecione o sintoma principal";
 
-  const icon = document.createElement('div');
-  icon.className = 'emoji';
-  icon.textContent = emoji;
+    resultado.appendChild(title);
 
-  const strong = document.createElement('strong');
-  strong.textContent = result.title;
-
-  const span = document.createElement('span');
-
-  span.textContent = {
-    vermelho: 'Ação imediata',
-    amarelo: 'Priorizar avaliação',
-    verde: 'Sem alerta detectado',
-    revisao: 'Revisão necessária'
-  }[result.level];
-
-  level.append(icon, strong, span);
-
-  $('riskHeadline').textContent = result.headline;
-  $('riskExplanation').textContent = result.explanation;
-
-  $('riskTimestamp').textContent =
-    'Última análise: ' +
-    new Date().toLocaleTimeString('pt-BR') +
-    ' • Atualização automática';
-
-  $('liveStatus').textContent = '● ATUALIZADO';
-
-  const chips = $('riskChips');
-  chips.replaceChildren();
-
-  [
-    `Alertas máximos: ${result.redCount}`,
-    `Fatores de atenção: ${result.yellowCount}`,
-    `Campos essenciais: ${result.complete ? 'preenchidos' : 'incompletos'}`
-  ].forEach(text => {
-    const chip = document.createElement('span');
-    chip.className = 'chip';
-    chip.textContent = text;
-    chips.appendChild(chip);
-  });
-
-  fillList(
-    'riskFactors',
-    result.reasons.length
-      ? result.reasons
-      : ['Preencha o sintoma e os dados disponíveis para iniciar a análise.']
-  );
-
-  fillList('riskActions', result.actions);
-  fillList('riskCauses', result.causes);
-  fillList('immediateCare', result.immediateCare);
-
-  $('immediateCareBox').classList.toggle(
-    'alert',
-    result.level === 'vermelho'
-  );
-
-  return result;
-}
-
-function scheduleAnalysis() {
-  $('liveStatus').textContent = '◌ ANALISANDO…';
-
-  clearTimeout(analysisTimer);
-
-  analysisTimer = setTimeout(renderAnalysis, 180);
-}
-
-
-/* Atualiza a análise quando os campos mudam. */
-
-analysisFields.forEach(id => {
-  $(id).addEventListener('input', scheduleAnalysis);
-  $(id).addEventListener('change', scheduleAnalysis);
-});
-
-$('nome').addEventListener('input', scheduleAnalysis);
-
-
-/* ======================================
-   FILA DE PACIENTES
-====================================== */
-
-async function carregarPacientes() {
-
-  const status = $('queueStatus');
-
-  try {
-
-    const response = await fetch('/pacientes', {
-      cache: 'no-store'
-    });
-
-    if (!response.ok) {
-      throw new Error('Falha ao carregar pacientes');
-    }
-
-    const patients = await response.json();
-
-    const fila = patients.filter(
-      p => p.status === 'triagem'
-    );
-
-    const list = $('fila-pacientes');
-
-    list.replaceChildren();
-
-    if (!fila.length) {
-
-      const empty = document.createElement('div');
-
-      empty.className = 'empty';
-      empty.textContent = 'Nenhum paciente aguardando triagem.';
-
-      list.appendChild(empty);
-
-    }
-
-    fila.forEach(p => {
-
-      const row = document.createElement('div');
-      row.className = 'queue-row';
-
-      const info = document.createElement('div');
-
-      const name = document.createElement('strong');
-      name.textContent = p.nome || 'Paciente';
-
-      const small = document.createElement('small');
-
-      small.textContent =
-        `Tipo: ${p.tipo || 'não informado'} • CPF: ${p.cpf || '—'}`;
-
-      info.append(name, small);
-
-      const button = document.createElement('button');
-
-      button.type = 'button';
-      button.className = 'btn btn-tv';
-      button.textContent = '▣ Chamar na TV';
-
-      button.addEventListener('click', () => {
-        chamarNaTV(p.nome || 'Paciente');
-      });
-
-      row.append(info, button);
-
-      list.appendChild(row);
-
-    });
-
-    status.textContent =
-      `${fila.length} paciente(s) aguardando • sincronizado às ` +
-      new Date().toLocaleTimeString('pt-BR');
-
-  } catch (error) {
-
-    status.textContent =
-      'Não foi possível sincronizar. Confira se o servidor está ativo.';
-
+    return null;
   }
 
+  const analise =
+    classificarRisco(sintoma, temperatura, observacao);
+
+  resultado.className = "risco-cartao " + analise.risco;
+  resultado.replaceChildren();
+
+  const title = document.createElement("div");
+  title.className = "risco-titulo";
+  title.textContent = analise.titulo;
+
+  resultado.appendChild(title);
+
+  function adicionarSecao(tituloTexto, itens) {
+    const subtitulo = document.createElement("p");
+
+    const strong = document.createElement("strong");
+    strong.textContent = tituloTexto;
+
+    subtitulo.appendChild(strong);
+    resultado.appendChild(subtitulo);
+
+    const lista = document.createElement("ul");
+
+    itens.forEach(itemTexto => {
+      const li = document.createElement("li");
+      li.textContent = itemTexto;
+      lista.appendChild(li);
+    });
+
+    resultado.appendChild(lista);
+  }
+
+  adicionarSecao(
+    "Fatores considerados",
+    analise.motivos
+  );
+
+  adicionarSecao(
+    "Possíveis causas (não são diagnóstico)",
+    analise.causas
+  );
+
+  adicionarSecao(
+    "Cuidados e próximas ações sugeridas",
+    analise.cuidados
+  );
+
+  const nota = document.createElement("p");
+
+  nota.textContent =
+    "Esta análise é demonstrativa, baseada em regras simples e nas informações preenchidas. Não é diagnóstico, não confirma a causa dos sintomas e não substitui a avaliação de um profissional.";
+
+  resultado.appendChild(nota);
+
+  return analise;
 }
 
+async function salvar() {
+  const nome =
+    document.getElementById("nome").value.trim();
 
-/* ======================================
-   CHAMAR PACIENTE NA TV
-====================================== */
+  const sintoma =
+    document.getElementById("sintoma").value;
 
-async function chamarNaTV(nome) {
+  const tempTexto =
+    document.getElementById("temp").value.trim();
+
+  const temperatura =
+    tempTexto === "" ? null : Number(tempTexto);
+
+  const alergia =
+    document.getElementById("alergia").value.trim();
+
+  const observacao =
+    document.getElementById("observacao").value.trim();
+
+  if (!nome || !sintoma) {
+    alert(
+      "Preencha o nome do paciente e selecione o sintoma principal."
+    );
+    return;
+  }
+
+  if (
+    tempTexto !== "" &&
+    (
+      !Number.isFinite(temperatura) ||
+      temperatura < 30 ||
+      temperatura > 45
+    )
+  ) {
+    alert("Confira a temperatura informada.");
+    return;
+  }
+
+  /*
+   * Calcula os dados para salvar sem mostrar o resultado na tela.
+   * Para exibir a análise, é necessário clicar no botão específico.
+   */
+  const analise = classificarRisco(
+    sintoma,
+    temperatura === null ? NaN : temperatura,
+    observacao
+  );
+
+  const risco =
+    analise.risco === "revisao"
+      ? "amarelo"
+      : analise.risco;
 
   try {
+    const r = await fetch("/triagem", {
+      method: "POST",
 
-    const response = await fetch('/tv/chamar', {
-      method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
+
       body: JSON.stringify({
-        localTipo: 'GUICHÊ',
-        localNumero: '01',
-        paciente: nome
+        nome,
+        sintoma,
+        temperatura,
+        alergia,
+        observacao,
+        risco,
+
+        fatoresDetectados: analise.motivos,
+        causasPossiveis: analise.causas,
+        cuidadosImediatos: analise.cuidados,
+        acoesSugeridas: [analise.orientacao]
       })
     });
 
-    if (!response.ok) {
-      throw new Error('Falha ao chamar');
+    if (!r.ok) {
+      throw new Error("Falha ao salvar triagem");
     }
 
-    alert(`${nome} foi chamado na TV.`);
+    await r.json();
 
-  } catch (error) {
-
+    alert("Triagem salva com sucesso.");
+  } catch (e) {
     alert(
-      'Não foi possível chamar o paciente na TV. Confira o servidor.'
+      "Não foi possível salvar a triagem. Verifique se o servidor está ativo."
     );
-
   }
-
 }
 
-
-/* ======================================
-   LIMPAR PARA O PRÓXIMO PACIENTE
-====================================== */
-
-function limparFormulario() {
-
-  form.reset();
-
-  $('consciencia').value = 'normal';
-  $('respiracao').value = 'normal';
-  $('sangramento').value = 'nenhum';
-  $('evolucao').value = 'estavel';
-
-  $('saveStatus').textContent =
-    'Formulário pronto para outro paciente.';
-
-  renderAnalysis();
-
-  $('nome').focus();
-
-}
-
-$('newPatientBtn').addEventListener('click', limparFormulario);
-$('clearBtn').addEventListener('click', limparFormulario);
-$('refreshQueueBtn').addEventListener('click', carregarPacientes);
-
-
-/* ======================================
-   SALVAR TRIAGEM
-====================================== */
-
-form.addEventListener('submit', async event => {
-
-  event.preventDefault();
-
-  const nome = value('nome');
-  const sintoma = value('sintoma');
-
-  if (!nome || !sintoma) {
-
-    $('saveStatus').textContent =
-      'Informe nome e sintoma principal.';
-
-    (!nome ? $('nome') : $('sintoma')).focus();
-
-    return;
-
-  }
-
-  const validations = [
-    ['idade', 0, 120, 'idade'],
-    ['temp', 25, 45, 'temperatura'],
-    ['fc', 1, 300, 'frequência cardíaca'],
-    ['fr', 1, 100, 'frequência respiratória'],
-    ['spo2', 50, 100, 'saturação'],
-    ['pas', 30, 300, 'pressão sistólica'],
-    ['dor', 0, 10, 'intensidade da dor']
-  ];
-
-  for (const [id, min, max, label] of validations) {
-
-    const raw = value(id);
-
-    if (
-      raw !== '' &&
-      (
-        num(id) === null ||
-        num(id) < min ||
-        num(id) > max
-      )
-    ) {
-
-      $('saveStatus').textContent = `Confira o campo ${label}.`;
-
-      $(id).focus();
-
-      return;
-
-    }
-
-  }
-
-  const result = renderAnalysis();
-
-  const payload = {
-    nome,
-    idade: num('idade'),
-    duracao: value('duracao'),
-    sintoma,
-    dor: num('dor'),
-    temperatura: num('temp'),
-    frequenciaCardiaca: num('fc'),
-    frequenciaRespiratoria: num('fr'),
-    saturacao: num('spo2'),
-    pressaoSistolica: num('pas'),
-    consciencia: value('consciencia'),
-    respiracao: value('respiracao'),
-    sangramento: value('sangramento'),
-    evolucao: value('evolucao'),
-    alergia: value('alergia'),
-    observacao: value('observacao'),
-
-    risco: result.level === 'revisao'
-      ? 'amarelo'
-      : result.level,
-
-    causasPossiveis: result.causes,
-    cuidadosImediatos: result.immediateCare,
-    fatoresDetectados: result.reasons,
-    acoesSugeridas: result.actions
-  };
-
-  $('saveStatus').textContent = 'Salvando triagem…';
-
-  try {
-
-    const response = await fetch('/triagem', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
-
-    if (!response.ok) {
-      throw new Error('Falha ao salvar');
-    }
-
-    await response.json();
-
-    $('saveStatus').textContent =
-      'Triagem salva. Preparando o próximo paciente…';
-
-    await carregarPacientes();
-
-    setTimeout(limparFormulario, 900);
-
-  } catch (error) {
-
-    $('saveStatus').textContent =
-      'Não foi possível salvar. Confira a conexão com o servidor.';
-
-  }
-
-});
-
-
-/* Inicialização e sincronização da fila. */
-
-renderAnalysis();
+// Carrega a fila ao abrir a página e atualiza a cada 10 segundos.
 carregarPacientes();
-
-setInterval(carregarPacientes, 5000);
+setInterval(carregarPacientes, 10000);
 </script>
+
 </body>
 </html>
