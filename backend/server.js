@@ -17,9 +17,9 @@ app.use(express.static(path.join(__dirname, "../frontend")));
 const DB_FILE = path.join(__dirname, "db.json");
 
 
-/* =========================================
-   LEITURA DO BANCO DE DADOS
-========================================= */
+/* ======================================
+   BANCO DE DADOS
+====================================== */
 
 function readDB() {
 
@@ -36,64 +36,35 @@ function readDB() {
 
   }
 
-
   try {
 
     const db = JSON.parse(
       fs.readFileSync(DB_FILE, "utf8")
     );
 
+    if (!Array.isArray(db.usuarios)) db.usuarios = [];
+    if (!Array.isArray(db.pacientes)) db.pacientes = [];
+    if (!Array.isArray(db.triagens)) db.triagens = [];
+    if (!Array.isArray(db.consultas)) db.consultas = [];
 
-    if (!Array.isArray(db.usuarios)) {
-      db.usuarios = [];
-    }
-
-    if (!Array.isArray(db.pacientes)) {
-      db.pacientes = [];
-    }
-
-    if (!Array.isArray(db.triagens)) {
-      db.triagens = [];
-    }
-
-    if (!Array.isArray(db.consultas)) {
-      db.consultas = [];
-    }
-
-    if (!db.tv_chamada) {
-      db.tv_chamada = null;
-    }
+    if (!db.tv_chamada) db.tv_chamada = null;
 
     if (!Array.isArray(db.tv_historico)) {
       db.tv_historico = [];
     }
 
-
     return db;
-
 
   } catch (error) {
 
     console.error("Erro ao ler db.json:", error);
 
-
-    return {
-      usuarios: [],
-      pacientes: [],
-      triagens: [],
-      consultas: [],
-      tv_chamada: null,
-      tv_historico: []
-    };
+    throw new Error("Não foi possível ler o banco de dados.");
 
   }
 
 }
 
-
-/* =========================================
-   GRAVAR NO BANCO DE DADOS
-========================================= */
 
 function writeDB(data) {
 
@@ -105,9 +76,9 @@ function writeDB(data) {
 }
 
 
-/* =========================================
+/* ======================================
    LOGIN
-========================================= */
+====================================== */
 
 app.post("/login", (req, res) => {
 
@@ -118,7 +89,6 @@ app.post("/login", (req, res) => {
     u.senha === req.body.senha
   );
 
-
   if (!user) {
 
     return res.status(401).json({
@@ -127,51 +97,40 @@ app.post("/login", (req, res) => {
 
   }
 
-
   res.json(user);
 
 });
 
 
-/* =========================================
-   ATENDIMENTO — CADASTRAR PACIENTE
-========================================= */
+/* ======================================
+   ATENDIMENTO
+====================================== */
 
 app.post("/atendimento", (req, res) => {
 
   const db = readDB();
 
-
   const paciente = {
-
     id: Date.now(),
-
     nome: req.body.nome,
-
     cpf: req.body.cpf,
-
     tipo: req.body.tipo,
-
     status: "triagem",
-
     createdAt: new Date()
-
   };
-
 
   db.pacientes.push(paciente);
 
   writeDB(db);
-
 
   res.json(paciente);
 
 });
 
 
-/* =========================================
+/* ======================================
    LISTAR PACIENTES
-========================================= */
+====================================== */
 
 app.get("/pacientes", (req, res) => {
 
@@ -182,86 +141,163 @@ app.get("/pacientes", (req, res) => {
 });
 
 
-/* =========================================
-   TRIAGEM — SALVAR CLASSIFICAÇÃO DE RISCO
-========================================= */
+/* ======================================
+   TRIAGEM E CLASSIFICAÇÃO
+====================================== */
 
 app.post("/triagem", (req, res) => {
 
-  const db = readDB();
+  try {
 
-  let risco = req.body.risco;
+    const db = readDB();
+    const body = req.body || {};
 
-  const temperatura = Number(req.body.temperatura);
+    let risco = [
+      "verde",
+      "amarelo",
+      "vermelho"
+    ].includes(body.risco)
+      ? body.risco
+      : "amarelo";
+
+    const temperatura =
+      body.temperatura === null ||
+      body.temperatura === "" ||
+      body.temperatura === undefined
+        ? null
+        : Number(body.temperatura);
 
 
-  /*
-    AJUSTE DA CLASSIFICAÇÃO:
+    /*
+      Regras de segurança demonstrativas:
 
-    1. Se o assistente identificou risco vermelho,
-       o backend preserva essa classificação.
+      - Um alerta vermelho não pode ser rebaixado.
+      - Temperatura >= 40 °C eleva para vermelho neste protótipo.
+      - Temperatura >= 38 °C eleva para amarelo se não houver vermelho.
+      - Dados desconhecidos não são classificados como verdes.
 
-    2. Temperatura igual ou superior a 39 °C
-       também aciona a categoria vermelha neste protótipo.
+      Essas regras NÃO constituem protocolo clínico validado.
+    */
 
-    3. Temperatura igual ou superior a 38 °C
-       eleva a categoria para amarelo, caso não seja vermelho.
+    if (
+      risco === "vermelho" ||
+      (
+        temperatura !== null &&
+        Number.isFinite(temperatura) &&
+        temperatura >= 40
+      )
+    ) {
 
-    4. Valores de risco desconhecidos são tratados como amarelo,
-       para evitar que um registro sem classificação válida
-       seja gravado como verde.
-  */
+      risco = "vermelho";
 
-  if (risco === "vermelho" || temperatura >= 39) {
+    } else if (
+      temperatura !== null &&
+      Number.isFinite(temperatura) &&
+      temperatura >= 38
+    ) {
 
-    risco = "vermelho";
+      risco = "amarelo";
 
-  } else if (
-    temperatura >= 38 ||
-    !["verde", "amarelo"].includes(risco)
-  ) {
+    }
 
-    risco = "amarelo";
+
+    const triagem = {
+
+      id: Date.now(),
+
+      nome: body.nome || "",
+
+      idade: body.idade ?? null,
+
+      duracao: body.duracao || "",
+
+      sintoma: body.sintoma || "",
+
+      dor: body.dor ?? null,
+
+      temperatura: body.temperatura ?? null,
+
+      frequenciaCardiaca:
+        body.frequenciaCardiaca ?? null,
+
+      frequenciaRespiratoria:
+        body.frequenciaRespiratoria ?? null,
+
+      saturacao:
+        body.saturacao ?? null,
+
+      pressaoSistolica:
+        body.pressaoSistolica ?? null,
+
+      consciencia:
+        body.consciencia || "não informado",
+
+      respiracao:
+        body.respiracao || "não informado",
+
+      sangramento:
+        body.sangramento || "não informado",
+
+      evolucao:
+        body.evolucao || "não informado",
+
+      alergia:
+        body.alergia || "não informado",
+
+      observacao:
+        body.observacao || "",
+
+      fatoresDetectados:
+        Array.isArray(body.fatoresDetectados)
+          ? body.fatoresDetectados
+          : [],
+
+      causasPossiveis:
+        Array.isArray(body.causasPossiveis)
+          ? body.causasPossiveis
+          : [],
+
+      cuidadosImediatos:
+        Array.isArray(body.cuidadosImediatos)
+          ? body.cuidadosImediatos
+          : [],
+
+      acoesSugeridas:
+        Array.isArray(body.acoesSugeridas)
+          ? body.acoesSugeridas
+          : [],
+
+      risco,
+
+      status: "aguardando_medico",
+
+      createdAt: new Date()
+
+    };
+
+
+    db.triagens.push(triagem);
+
+    writeDB(db);
+
+    res.json(triagem);
+
+  } catch (error) {
+
+    console.error("Erro ao salvar triagem:", error);
+
+    res.status(500).json({
+      erro: "Não foi possível salvar a triagem."
+    });
 
   }
-
-
-  const triagem = {
-
-    id: Date.now(),
-
-    nome: req.body.nome,
-
-    sintoma: req.body.sintoma,
-
-    temperatura: req.body.temperatura,
-
-    alergia: req.body.alergia,
-
-    observacao: req.body.observacao,
-
-    risco: risco,
-
-    status: "aguardando_medico",
-
-    createdAt: new Date()
-
-  };
-
-
-  db.triagens.push(triagem);
-
-  writeDB(db);
-
-
-  res.json(triagem);
 
 });
 
 
-/* =========================================
+/* ======================================
    LISTAR TRIAGENS
-========================================= */
+====================================== */
 
 app.get("/triagens", (req, res) => {
 
@@ -272,86 +308,84 @@ app.get("/triagens", (req, res) => {
 });
 
 
-/* =========================================
-   MÍDIA INDOOR — CHAMAR PACIENTE NA TV
-========================================= */
+/* ======================================
+   CHAMAR PACIENTE NA TV
+====================================== */
 
 app.post("/tv/chamar", (req, res) => {
 
-  const db = readDB();
+  try {
 
+    const db = readDB();
 
-  const chamada = {
+    const chamada = {
 
-    id: Date.now().toString(),
+      id: Date.now().toString(),
 
-    localTipo: req.body.localTipo,
+      localTipo: req.body.localTipo,
 
-    localNumero: req.body.localNumero,
+      localNumero: req.body.localNumero,
 
-    paciente: req.body.paciente,
+      paciente: req.body.paciente,
 
-    hora: new Date().toLocaleTimeString(
-      "pt-BR",
-      {
-        hour: "2-digit",
-        minute: "2-digit"
-      }
-    )
+      hora: new Date().toLocaleTimeString(
+        "pt-BR",
+        {
+          hour: "2-digit",
+          minute: "2-digit"
+        }
+      )
 
-  };
+    };
 
+    db.tv_chamada = chamada;
 
-  db.tv_chamada = chamada;
+    db.tv_historico.unshift(chamada);
 
-  db.tv_historico.unshift(chamada);
+    if (db.tv_historico.length > 5) {
+      db.tv_historico.pop();
+    }
 
+    writeDB(db);
 
-  // Mantém somente as últimas cinco chamadas.
+    res.json(chamada);
 
-  if (db.tv_historico.length > 5) {
+  } catch (error) {
 
-    db.tv_historico.pop();
+    console.error("Erro ao chamar paciente:", error);
+
+    res.status(500).json({
+      erro: "Não foi possível registrar a chamada."
+    });
 
   }
-
-
-  writeDB(db);
-
-
-  res.json(chamada);
 
 });
 
 
-/* =========================================
-   CONSULTAR CHAMADA ATUAL DA TV
-========================================= */
+/* ======================================
+   CONSULTAR CHAMADA DA TV
+====================================== */
 
 app.get("/tv/chamada", (req, res) => {
 
   const db = readDB();
 
-
   res.json({
-
     chamada: db.tv_chamada,
-
     historico: db.tv_historico
-
   });
 
 });
 
 
-/* =========================================
+/* ======================================
    LISTA DE MEDICAÇÕES
-========================================= */
+====================================== */
 
 app.get("/lista-medicacoes", (req, res) => {
 
   res.json([
-
     "Dipirona",
     "Paracetamol",
     "Ibuprofeno",
@@ -362,72 +396,80 @@ app.get("/lista-medicacoes", (req, res) => {
     "Buscopan",
     "Dramin",
     "Soro fisiológico"
-
   ]);
 
 });
 
 
-/* =========================================
+/* ======================================
    CONSULTA MÉDICA
-========================================= */
+====================================== */
 
 app.post("/consulta", (req, res) => {
 
-  const db = readDB();
+  try {
 
+    const db = readDB();
 
-  const consulta = {
+    const consulta = {
 
-    id: Date.now(),
+      id: Date.now(),
 
-    paciente: req.body.paciente,
+      paciente: req.body.paciente,
 
-    data:
-      req.body.data ||
-      new Date().toISOString().slice(0, 10),
+      data:
+        req.body.data ||
+        new Date().toISOString().slice(0, 10),
 
-    medico: req.body.medico || "",
+      medico: req.body.medico || "",
 
-    crm: req.body.crm || "",
+      crm: req.body.crm || "",
 
-    sintomas: req.body.sintomas || "",
+      sintomas: req.body.sintomas || "",
 
-    sinais: req.body.sinais || "",
+      sinais: req.body.sinais || "",
 
-    diagnostico: req.body.diagnostico || "",
+      diagnostico: req.body.diagnostico || "",
 
-    medicacao: req.body.medicacao || "",
+      medicacao: req.body.medicacao || "",
 
-    orientacoes: req.body.orientacoes || "",
+      orientacoes: req.body.orientacoes || "",
 
-    retorno: req.body.retorno || "",
+      retorno: req.body.retorno || "",
 
-    condicao: req.body.condicao || "Estável",
+      condicao: req.body.condicao || "Estável",
 
-    observacoes:
-      req.body.observacoes ||
-      req.body.obs ||
-      "",
+      observacoes:
+        req.body.observacoes ||
+        req.body.obs ||
+        "",
 
-    createdAt: new Date()
+      createdAt: new Date()
 
-  };
+    };
 
+    db.consultas.push(consulta);
 
-  db.consultas.push(consulta);
+    writeDB(db);
 
-  writeDB(db);
+    res.json(consulta);
 
+  } catch (error) {
 
-  res.json(consulta);
+    console.error("Erro ao salvar consulta:", error);
+
+    res.status(500).json({
+      erro: "Não foi possível salvar a consulta."
+    });
+
+  }
 
 });
 
 
-/* =========================================
-   MEDICAÇÕES — CONSULTAS REGISTRADAS
-========================================= */
+/* ======================================
+   CONSULTAS / MEDICAÇÕES
+====================================== */
 
 app.get("/medicacoes", (req, res) => {
 
@@ -438,15 +480,14 @@ app.get("/medicacoes", (req, res) => {
 });
 
 
-/* =========================================
+/* ======================================
    INICIALIZAÇÃO DO SERVIDOR
-========================================= */
+====================================== */
 
 const PORT = process.env.PORT || 3000;
 
-
 app.listen(PORT, () => {
 
-  console.log(`Porta ${PORT}`);
+  console.log(`Sentinela executando na porta ${PORT}`);
 
 });
